@@ -23,3 +23,4 @@ As this was my first personal project, I faced many challenges developing this a
 - Settings - Set custom times page:
 
 ![Image 1](/res/settings_sc1.png)
+<img src="/res/settings_sc2.png" width = 600
