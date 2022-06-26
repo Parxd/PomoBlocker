@@ -21,5 +21,3 @@ As this was my first personal project, I faced many challenges developing this a
 
 ### Sample screenshots
 ![Screenshot 1](/res/settings_sc1.png)
-![Screenshot 2](/res/settings_sc2.png)
-![Screenshot 3](/res/settings_sc3.png)
