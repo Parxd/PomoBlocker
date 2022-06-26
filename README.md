@@ -18,3 +18,8 @@ Users can...
 
 ### Personal challenges
 As this was my first personal project, I faced many challenges developing this application. The main challenges included structuring the application (ensuring users "progress" smoothly through the app), user interface, and properly using OOP to organize GUI code/logic. This being said, developing an app from the ground up has greatly solidified my skills in these areas. Some solutions I used to overcome these blocks included hand drawing multiple possible user interfaces, studying existing OOP code behind GUIs, and writing test cases for the app.
+
+### Sample screenshots
+![Screenshot 1](/res/settings_sc1.png)
+![Screenshot 2](/res/settings_sc2.png)
+![Screenshot 3](/res/settings_sc3.png)
