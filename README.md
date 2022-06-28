@@ -26,10 +26,10 @@ As this was my first personal project, I faced many challenges developing this a
 
 ### Sample screenshots
 
-- Settings - Add websites to block:
+- Settings - Add websites to block
 
 <img src="/res/settings_sc2.png" width = 500>
 
-- Settings - Set custom times for each cycle:
+- Settings - Set custom times for each cycle
 
 <img src="/res/settings_sc1.png" width = 500>
