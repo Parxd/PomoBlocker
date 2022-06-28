@@ -1,0 +1,5 @@
+Features:
+ - Three different tabs (work, short break, long break)
+ - Settings window to change time of each cycle + modify blocked websites w/ save button
+ - Start + stop button
+ - Windows notification or sound when time is up
