@@ -11,14 +11,13 @@ class App():
     def __init__(self):
         self.master = ctk.CTk()
         self.master.title("PomoBlocker")
-        # self.master.geometry("800x600")
         self.master.iconbitmap(
-            r"C:\Users\14253\Important\Interests\Coding Projects\PomoBlocker\pomodoro.ico"
+            "..\\res\\media\\pomodoro.ico"
         )
         self.entries = []
         self.websites = []
         self.darkbgimage = ImageTk.PhotoImage(Image.open(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\bg.jpg"
+            "..\\res\\media\\bg.jpg"
         ))
         self.darkbgimagelabel = tk.Label(
             self.master,
