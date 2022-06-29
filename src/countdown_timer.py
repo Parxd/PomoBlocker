@@ -1,10 +1,12 @@
 import time
 import threading
 import tkinter as tk
+from turtle import goto
 import customtkinter as ctk
 
 
 class App():
+    go = False
     work = 1500
     shortbreak = 300
     longbreak = 900
@@ -62,22 +64,48 @@ class App():
             column = 1
         )
 
-        self.workminutes.set("00")
+        self.workminutes.set("25")
         self.workseconds.set("00")
-        threading.Thread(target = self.worktimer).start()
+
+        self.start = ctk.CTkButton(
+            self.workframe,
+            command = lambda: [self.start_bool(True), threading.Thread(target = self.worktimer).start()],
+            text = "Start",
+            text_font = ("Roboto Medium", 10)
+        )
+        self.start.grid(
+            row = 1,
+            column = 0
+        )
+        self.stop = ctk.CTkButton(
+            self.workframe,
+            command = lambda: [self.start_bool(False), threading.Thread(target = self.worktimer).start()],
+            text = "Stop",
+            text_font = ("Roboto Medium", 10)
+            )
+        self.stop.grid(
+            row = 1,
+            column = 1
+        )
+
+    def start_bool(self, state):
+        self.go = state
 
     def raise_frame(self, frame):
         self.frame = frame
         self.frame.tkraise()
 
     def worktimer(self):
-        while self.work > 0:
-            self.minute, self.second = divmod(self.work, 60)
+        while self.work and self.go:
+            self.minute = self.work // 60
+            self.second = self.work % 60
             self.workminutes.set(self.minute)
             self.workseconds.set(self.second)
+            self.workminutes.set(f"{self.minute:02d}")
+            self.workseconds.set(f"{self.second:02d}")
+            self.root.update()
             time.sleep(1)
             self.work -= 1
-            self.root.update()
 
 
 def main():
