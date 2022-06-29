@@ -14,9 +14,8 @@ class Settings():
         self.master.title("Settings")
         self.master.geometry("900x740")
         self.master.iconbitmap(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\settings.ico"
+            "..\\res\\media\\settings.ico"
         )
-        # self.master.resizable(False, False)
         self.master.grid_rowconfigure(0, weight = 1)
         self.master.grid_rowconfigure(1, weight = 1)
         self.master.grid_columnconfigure((1, 2, 3), weight = 1)
@@ -169,7 +168,7 @@ class Settings():
         )
 
         self.workimg = ImageTk.PhotoImage(Image.open(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\working.png"
+            "..\\res\\media\\working.png"
             ))
         self.workimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -207,7 +206,7 @@ class Settings():
         self.workinput.set("")
 
         self.shortbreakimg = ImageTk.PhotoImage(Image.open(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\coffee.png"
+            "..\\res\\media\\coffee.png"
         ))
         self.shortbreakimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -243,7 +242,7 @@ class Settings():
         self.shortbreakinput.set("")
 
         self.longbreakimg = ImageTk.PhotoImage(Image.open(
-          "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\pillow.png"  
+          "..\\res\\media\\pillow.png"  
         ))
         self.longbreakimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -456,7 +455,7 @@ class Settings():
         )
 
         self.addwebsiteimage = ImageTk.PhotoImage(Image.open(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\add.png"
+            "..\\res\\media\\add.png"
         ))
         self.addwebsite = ctk.CTkButton(
             self.websites_settings_frame,
@@ -476,7 +475,7 @@ class Settings():
             sticky = "EW"
         )
         self.removewebsiteimage = ImageTk.PhotoImage(Image.open(
-            "C:\\Users\\14253\\Important\\Interests\\Coding Projects\\PomoBlocker\\remove.png"
+            "..\\res\\media\\remove.png"
         ))
         self.removewebsite = ctk.CTkButton(
             self.websites_settings_frame,
@@ -652,18 +651,14 @@ class Settings():
         )
 
     def play_sound(self):
-        if self.radiovar.get() == 0:
-            pass
-        elif self.radiovar.get() == 1:
-            pass
-        elif self.radiovar.get() == 2:
-            playsound("notification_sounds\\bell1.wav")
+        if self.radiovar.get() == 2:
+            playsound("..\\res\\media\\sounds\\bell1.wav")
         elif self.radiovar.get() == 3:
-            playsound("notification_sounds\\bell2.wav")
+            playsound("..\\res\\media\\sounds\\bell2.wav")
         elif self.radiovar.get() == 4:
-            playsound("notification_sounds\\alarm1.wav")
+            playsound("..\\res\\media\\sounds\\alarm1.wav")
         elif self.radiovar.get() == 5:
-            playsound("notification_sounds\\alarm2.wav")
+            playsound("..\\res\\media\\sounds\\alarm2.wav")
 
 def main():
     settings = Settings()
