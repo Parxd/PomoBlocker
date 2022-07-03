@@ -1,15 +1,16 @@
 import time
 import threading
 import tkinter as tk
-from turtle import goto
+from tkinter import messagebox
 import customtkinter as ctk
 
 
 class App():
-    go = False
+    start = False
     work = 1500
     shortbreak = 300
     longbreak = 900
+
     def __init__(self):
         self.root = ctk.CTk()
         self.root.geometry("800x600")
@@ -43,69 +44,63 @@ class App():
         self.longbreakframe.grid_rowconfigure((0, 1), weight = 1)
         self.longbreakframe.grid_columnconfigure((0, 1), weight = 1)
 
-        self.workminutes = tk.StringVar()
-        self.workminutelabel = ctk.CTkLabel(
+        self.worktime = ctk.CTkLabel(
             self.workframe,
-            textvariable = self.workminutes,
-            text_font = ("Roboto Medium", 30)
+            text = f"{self.work // 60} : 00",
+            text_font = ("", 40)
         )
-        self.workminutelabel.grid(
+        self.worktime.grid(
             row = 0,
-            column = 0
-        )
-        self.workseconds = tk.StringVar()
-        self.worksecondlabel = ctk.CTkLabel(
-            self.workframe,
-            textvariable = self.workseconds,
-            text_font = ("Roboto Medium", 30)
-        )
-        self.worksecondlabel.grid(
-            row = 0,
-            column = 1
+            column = 0,
+            columnspan = 2
         )
 
-        self.workminutes.set("25")
-        self.workseconds.set("00")
-
-        self.start = ctk.CTkButton(
+        self.start_button = ctk.CTkButton(
             self.workframe,
-            command = lambda: [self.start_bool(True), threading.Thread(target = self.worktimer).start()],
+            command = lambda: [
+                self.start_bool(True), 
+                threading.Thread(target = self.worktimer).start(), 
+                ],
             text = "Start",
             text_font = ("Roboto Medium", 10)
         )
-        self.start.grid(
+        self.start_button.grid(
             row = 1,
             column = 0
         )
-        self.stop = ctk.CTkButton(
+        self.stop_button = ctk.CTkButton(
             self.workframe,
-            command = lambda: [self.start_bool(False), threading.Thread(target = self.worktimer).start()],
+            command = lambda: [
+                self.start_bool(False), 
+                self.start_bool
+                ],
             text = "Stop",
             text_font = ("Roboto Medium", 10)
             )
-        self.stop.grid(
+        self.stop_button.grid(
             row = 1,
             column = 1
         )
 
     def start_bool(self, state):
-        self.go = state
+        self.start = state
 
     def raise_frame(self, frame):
         self.frame = frame
         self.frame.tkraise()
 
     def worktimer(self):
-        while self.work and self.go:
+        while self.work and self.start:
             self.minute = self.work // 60
             self.second = self.work % 60
-            self.workminutes.set(self.minute)
-            self.workseconds.set(self.second)
-            self.workminutes.set(f"{self.minute:02d}")
-            self.workseconds.set(f"{self.second:02d}")
+            self.worktime.configure(text = f"{self.minute:02d} : {self.second:02d}")
             self.root.update()
             time.sleep(1)
             self.work -= 1
+            if self.start:
+                self.start_button.config(state = tk.DISABLED)
+            else:
+                self.start_button.config(state = tk.NORMAL)
 
 
 def main():
