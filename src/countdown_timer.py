@@ -8,7 +8,7 @@ import settings as settings
 
 class App():
     start = False
-    work = 1500
+    work = 5
     shortbreak = 300
     longbreak = 900
 
@@ -47,7 +47,7 @@ class App():
 
         self.worktime = ctk.CTkLabel(
             self.workframe,
-            text = f"{self.work // 60} : 00",
+            text = f"{self.work // 60:02d} : {self.work % 60:02d}",
             text_font = ("", 40)
         )
         self.worktime.grid(
@@ -103,9 +103,7 @@ class App():
 
     def worktimer(self):
         while self.work > -1 and self.start:
-            self.minute = self.work // 60
-            self.second = self.work % 60
-            self.worktime.configure(text = f"{self.minute:02d} : {self.second:02d}")
+            self.worktime.configure(text = f"{self.work // 60:02d} : {self.work % 60:02d}")
             self.root.update()
             time.sleep(1)
             self.work -= 1
@@ -118,7 +116,6 @@ class App():
 def main():
     app = App()
     app.root.mainloop()
-    settings.Settings()
 
 
 if __name__ == '__main__':
