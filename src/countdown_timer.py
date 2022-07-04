@@ -1,13 +1,16 @@
 import time
 import threading
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 
 
 class App():
+    start = False
     work = 1500
     shortbreak = 300
     longbreak = 900
+
     def __init__(self):
         self.root = ctk.CTk()
         self.root.geometry("800x600")
@@ -41,43 +44,66 @@ class App():
         self.longbreakframe.grid_rowconfigure((0, 1), weight = 1)
         self.longbreakframe.grid_columnconfigure((0, 1), weight = 1)
 
-        self.workminutes = tk.StringVar()
-        self.workminutelabel = ctk.CTkLabel(
+        self.worktime = ctk.CTkLabel(
             self.workframe,
-            textvariable = self.workminutes,
-            text_font = ("Roboto Medium", 30)
+            text = f"{self.work // 60} : 00",
+            text_font = ("", 40)
         )
-        self.workminutelabel.grid(
+        self.worktime.grid(
             row = 0,
+            column = 0,
+            columnspan = 2
+        )
+
+        self.start_button = ctk.CTkButton(
+            self.workframe,
+            command = self.startbutton,
+            text = "Start",
+            text_font = ("Roboto Medium", 10)
+        )
+        self.start_button.grid(
+            row = 1,
             column = 0
         )
-        self.workseconds = tk.StringVar()
-        self.worksecondlabel = ctk.CTkLabel(
+        self.stop_button = ctk.CTkButton(
             self.workframe,
-            textvariable = self.workseconds,
-            text_font = ("Roboto Medium", 30)
-        )
-        self.worksecondlabel.grid(
-            row = 0,
+            command = lambda: [
+                self.start_bool(False), 
+                self.start_bool
+                ],
+            text = "Stop",
+            text_font = ("Roboto Medium", 10)
+            )
+        self.stop_button.grid(
+            row = 1,
             column = 1
         )
 
-        self.workminutes.set("00")
-        self.workseconds.set("00")
-        threading.Thread(target = self.worktimer).start()
+    def start_bool(self, state):
+        self.start = state
 
     def raise_frame(self, frame):
         self.frame = frame
         self.frame.tkraise()
 
+    def startbutton(self):
+        self.start_bool(True)
+        t = threading.Thread(target = self.worktimer)
+        t.daemon = True
+        t.start()
+
     def worktimer(self):
-        while self.work > 0:
-            self.minute, self.second = divmod(self.work, 60)
-            self.workminutes.set(self.minute)
-            self.workseconds.set(self.second)
+        while self.work and self.start:
+            self.minute = self.work // 60
+            self.second = self.work % 60
+            self.worktime.configure(text = f"{self.minute:02d} : {self.second:02d}")
+            self.root.update()
             time.sleep(1)
             self.work -= 1
-            self.root.update()
+            if self.start:
+                self.start_button.config(state = tk.DISABLED)
+            else:
+                self.start_button.config(state = tk.NORMAL)
 
 
 def main():
