@@ -57,10 +57,7 @@ class App():
 
         self.start_button = ctk.CTkButton(
             self.workframe,
-            command = lambda: [
-                self.start_bool(True), 
-                threading.Thread(target = self.worktimer).start(), 
-                ],
+            command = self.startbutton,
             text = "Start",
             text_font = ("Roboto Medium", 10)
         )
@@ -88,6 +85,12 @@ class App():
     def raise_frame(self, frame):
         self.frame = frame
         self.frame.tkraise()
+
+    def startbutton(self):
+        self.start_bool(True)
+        t = threading.Thread(target = self.worktimer)
+        t.daemon = True
+        t.start()
 
     def worktimer(self):
         while self.work and self.start:
