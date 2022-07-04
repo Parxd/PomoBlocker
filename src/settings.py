@@ -653,13 +653,14 @@ class Settings():
 
     def play_sound(self):
         if self.radiovar.get() == 2:
-            playsound("..\\res\\media\\sounds\\bell1.wav")
+            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
         elif self.radiovar.get() == 3:
-            playsound("..\\res\\media\\sounds\\bell2.wav")
+            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
         elif self.radiovar.get() == 4:
-            playsound("..\\res\\media\\sounds\\alarm1.wav")
+            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
         elif self.radiovar.get() == 5:
-            playsound("..\\res\\media\\sounds\\alarm2.wav")
+            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+
 
 def main():
     settings = Settings()
