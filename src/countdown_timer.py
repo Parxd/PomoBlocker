@@ -3,6 +3,7 @@ import threading
 import tkinter as tk
 from tkinter import messagebox
 import customtkinter as ctk
+import settings as settings
 
 
 class App():
@@ -38,7 +39,7 @@ class App():
         self.raise_frame(self.workframe)
 
         self.workframe.grid_rowconfigure((0, 1), weight = 1)
-        self.workframe.grid_columnconfigure((0, 1), weight = 1)
+        self.workframe.grid_columnconfigure((0, 1, 2), weight = 1)
         self.shortbreakframe.grid_rowconfigure((0, 1), weight = 1)
         self.shortbreakframe.grid_columnconfigure((0, 1), weight = 1)
         self.longbreakframe.grid_rowconfigure((0, 1), weight = 1)
@@ -52,7 +53,7 @@ class App():
         self.worktime.grid(
             row = 0,
             column = 0,
-            columnspan = 2
+            columnspan = 3
         )
 
         self.start_button = ctk.CTkButton(
@@ -78,6 +79,14 @@ class App():
             row = 1,
             column = 1
         )
+        self.skip_button = ctk.CTkButton(
+            self.workframe,
+            text = "Skip",
+            text_font = ("Roboto Medium", 10)
+        )
+        self.skip_button.grid(
+            row = 1,
+            column = 2)
 
     def start_bool(self, state):
         self.start = state
@@ -88,12 +97,12 @@ class App():
 
     def startbutton(self):
         self.start_bool(True)
-        t = threading.Thread(target = self.worktimer)
-        t.daemon = True
-        t.start()
+        thread = threading.Thread(target = self.worktimer)
+        thread.daemon = True
+        thread.start()
 
     def worktimer(self):
-        while self.work and self.start:
+        while self.work > -1 and self.start:
             self.minute = self.work // 60
             self.second = self.work % 60
             self.worktime.configure(text = f"{self.minute:02d} : {self.second:02d}")
@@ -109,6 +118,7 @@ class App():
 def main():
     app = App()
     app.root.mainloop()
+    settings.Settings()
 
 
 if __name__ == '__main__':
