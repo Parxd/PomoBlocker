@@ -1,4 +1,5 @@
 import threading
+from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox
 import customtkinter as ctk
@@ -14,7 +15,7 @@ class Settings():
         self.master.title("Settings")
         self.master.geometry("900x740")
         self.master.iconbitmap(
-            "..\\res\\media\\settings.ico"
+            Path(__file__).parent / "../res/media/settings.ico"
         )
         self.master.grid_rowconfigure(0, weight = 1)
         self.master.grid_rowconfigure(1, weight = 1)
@@ -168,7 +169,7 @@ class Settings():
         )
 
         self.workimg = ImageTk.PhotoImage(Image.open(
-            "..\\res\\media\\working.png"
+            Path(__file__).parent / "../res/media/working.png"
             ))
         self.workimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -206,7 +207,7 @@ class Settings():
         self.workinput.set("")
 
         self.shortbreakimg = ImageTk.PhotoImage(Image.open(
-            "..\\res\\media\\coffee.png"
+            Path(__file__).parent / "../res/media/coffee.png"
         ))
         self.shortbreakimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -242,7 +243,7 @@ class Settings():
         self.shortbreakinput.set("")
 
         self.longbreakimg = ImageTk.PhotoImage(Image.open(
-          "..\\res\\media\\pillow.png"  
+          Path(__file__).parent / "../res/media/pillow.png"  
         ))
         self.longbreakimglabel = ctk.CTkLabel(
             self.time_settings_frame,
@@ -455,7 +456,7 @@ class Settings():
         )
 
         self.addwebsiteimage = ImageTk.PhotoImage(Image.open(
-            "..\\res\\media\\add.png"
+            Path(__file__).parent / "../res/media/add.png"
         ))
         self.addwebsite = ctk.CTkButton(
             self.websites_settings_frame,
@@ -475,7 +476,7 @@ class Settings():
             sticky = "EW"
         )
         self.removewebsiteimage = ImageTk.PhotoImage(Image.open(
-            "..\\res\\media\\remove.png"
+            Path(__file__).parent / "../res/media/remove.png"
         ))
         self.removewebsite = ctk.CTkButton(
             self.websites_settings_frame,
