@@ -6,7 +6,7 @@ import customtkinter as ctk
 from PIL import ImageTk, Image
 from playsound import playsound
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("Dark")
 
 
 class Settings():
