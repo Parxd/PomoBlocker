@@ -17,6 +17,7 @@ class App():
     shortbreakstring = f"{shortbreak // 60:02d} : {shortbreak % 60:02d}"
     longbreakstring = f"{longbreak // 60:02d} : {longbreak % 60:02d}"
     pomocount = 0
+    workcount = 0
     cycle_length = 7
 
     def __init__(self):
@@ -46,7 +47,7 @@ class App():
         self.title_label = ctk.CTkLabel(
             self.topframe,
             text = "PomoBlocker",
-            text_font = ("Roboto Medium", 18),
+            text_font = ("Roboto Medium", 20),
             text_color = "#FFFFFF"
         )
         self.title_label.grid(
@@ -78,7 +79,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 11)
         )
         self.showworkframe.grid(
             row = 0,
@@ -92,7 +93,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 11)
         )
         self.showshortbreakframe.grid(
             row = 0,
@@ -107,7 +108,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 11)
         )
         self.showlongbreakframe.grid(
             row = 0,
@@ -131,11 +132,11 @@ class App():
         self.longbreakframe = ctk.CTkFrame(
             self.root
         )
-        self.workframe.grid_rowconfigure((0, 1), weight = 1)
+        self.workframe.grid_rowconfigure((0, 1, 2), weight = 1)
         self.workframe.grid_columnconfigure((0, 1, 2), weight = 1)
-        self.shortbreakframe.grid_rowconfigure((0, 1), weight = 1)
+        self.shortbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
         self.shortbreakframe.grid_columnconfigure((0, 1, 2), weight = 1)
-        self.longbreakframe.grid_rowconfigure((0, 1), weight = 1)
+        self.longbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
         self.longbreakframe.grid_columnconfigure((0, 1, 2), weight = 1)
         for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
                     frame.grid(
@@ -151,7 +152,7 @@ class App():
         self.worktime = ctk.CTkLabel(
             self.workframe,
             textvariable = self.worktimevar,
-            text_font = ("", 40)
+            text_font = ("Roboto Medium", 40)
         )
         self.worktime.grid(
             row = 0,
@@ -162,7 +163,7 @@ class App():
         self.shortbreaktime = ctk.CTkLabel(
             self.shortbreakframe,
             textvariable = self.shortbreaktimevar,
-            text_font = ("", 40)
+            text_font = ("Roboto Medium", 40)
         )
         self.shortbreaktime.grid(
             row = 0,
@@ -173,10 +174,41 @@ class App():
         self.longbreaktime = ctk.CTkLabel(
             self.longbreakframe,
             textvariable = self.longbreaktimevar,
-            text_font = ("", 40)
+            text_font = ("Roboto Medium", 40)
         )
         self.longbreaktime.grid(
             row = 0,
+            column = 0,
+            columnspan = 3
+        )
+
+        self.workcounterw = ctk.CTkLabel(
+            self.workframe,
+            text = f"0 / {self.cycle_length - 3}",
+            text_font = ("Roboto Medium", 15)
+        )
+        self.workcounterw.grid(
+            row = 1,
+            column = 0,
+            columnspan = 3
+        )
+        self.workcountersb = ctk.CTkLabel(
+            self.shortbreakframe,
+            text = f"0 / {self.cycle_length - 3}",
+            text_font = ("Roboto Medium", 15)
+        )
+        self.workcountersb.grid(
+            row = 1,
+            column = 0,
+            columnspan = 3
+        )
+        self.workcounterlb = ctk.CTkLabel(
+            self.longbreakframe,
+            text = f"0 / {self.cycle_length - 3}",
+            text_font = ("Roboto Medium", 15)
+        )
+        self.workcounterlb.grid(
+            row = 1,
             column = 0,
             columnspan = 3
         )
@@ -189,7 +221,7 @@ class App():
             fg_color = "#FF775B"
         )
         self.work_start_button.grid(
-            row = 1,
+            row = 2,
             column = 0
         )
         self.work_stop_button = ctk.CTkButton(
@@ -203,7 +235,7 @@ class App():
             fg_color = "#FF775B"
             )
         self.work_stop_button.grid(
-            row = 1,
+            row = 2,
             column = 1
         )
         self.work_skip_button = ctk.CTkButton(
@@ -214,7 +246,7 @@ class App():
             fg_color = "#FF775B"
         )
         self.work_skip_button.grid(
-            row = 1,
+            row = 2,
             column = 2)
         self.short_start_button = ctk.CTkButton(
             self.shortbreakframe,
@@ -223,7 +255,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.short_start_button.grid(
-            row = 1,
+            row = 2,
             column = 0
         )
         self.short_stop_button = ctk.CTkButton(
@@ -236,7 +268,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.short_stop_button.grid(
-            row = 1,
+            row = 2,
             column = 1
         )
         self.short_skip_button = ctk.CTkButton(
@@ -246,7 +278,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.short_skip_button.grid(
-            row = 1,
+            row = 2,
             column = 2
         )
         self.long_start_button = ctk.CTkButton(
@@ -256,7 +288,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.long_start_button.grid(
-            row = 1,
+            row = 2,
             column = 0
         )
         self.long_stop_button = ctk.CTkButton(
@@ -269,7 +301,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.long_stop_button.grid(
-            row = 1,
+            row = 2,
             column = 1
         )
         self.long_skip_button = ctk.CTkButton(
@@ -279,7 +311,7 @@ class App():
             text_font = ("Roboto Medium", 10)
         )
         self.long_skip_button.grid(
-            row = 1,
+            row = 2,
             column = 2
         )
 
@@ -303,6 +335,7 @@ class App():
         )
         if self.frame == self.workframe:
             if skip:
+                self.workcount += 1
                 self.pomocount += 1
                 if not self.pomocount % self.cycle_length:
                     self.raise_frame(self.longbreakframe)
@@ -345,6 +378,7 @@ class App():
             try:
                 if not seconds and not minutes:
                     self.start_bool(False)
+                    self.workcount += 1
                     self.pomocount += 1
                     if not self.pomocount % self.cycle_length:
                         self.raise_frame(self.longbreakframe)

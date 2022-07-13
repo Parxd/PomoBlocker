@@ -13,7 +13,7 @@ class Settings():
     def __init__(self):
         self.master = ctk.CTk()
         self.master.title("Settings")
-        self.master.geometry("900x740")
+        self.master.geometry("800x740")
         self.master.iconbitmap(
             Path(__file__).parent / "../res/media/settings.ico"
         )
@@ -230,7 +230,7 @@ class Settings():
             self.time_settings_frame,
             width = 120,
             text_font = ("Helvetica Medium", 11),
-            values = [i for i in range(5, 11)],
+            values = [i for i in range(0, 11)],
             fg_color = "grey35",
             button_color = "#FF775B",
             button_hover_color = "#FF8B6F"
