@@ -102,7 +102,8 @@ class App():
         self.shortbreaktime.grid(
             row = 0,
             column = 0,
-            columnspan = 3)
+            columnspan = 3
+        )
 
         self.longbreaktimevar = tk.StringVar(value = self.longbreakstring)
         self.longbreaktime = ctk.CTkLabel(
