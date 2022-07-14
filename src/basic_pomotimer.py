@@ -269,7 +269,6 @@ class App():
             else:
                 self.work_start_button.configure(state = tk.NORMAL)
 
-            # self.work = 1500
             while self.work > -1 and self.start:
                 seconds = self.work % 60
                 minutes = self.work // 60
@@ -298,7 +297,6 @@ class App():
             else:
                 self.short_start_button.configure(state = tk.NORMAL)
 
-            self.shortbreak = 300
             while self.shortbreak > -1 and self.start:
                 seconds = self.shortbreak % 60
                 minutes = self.shortbreak // 60
@@ -322,7 +320,6 @@ class App():
             else:
                 self.long_start_button.configure(state = tk.NORMAL)
 
-            self.longbreak = 900
             while self.longbreak > -1 and self.start:
                 seconds = self.longbreak % 60
                 minutes = self.longbreak // 60
