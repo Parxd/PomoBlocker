@@ -269,7 +269,7 @@ class App():
             else:
                 self.work_start_button.configure(state = tk.NORMAL)
 
-            self.work = 1500
+            # self.work = 1500
             while self.work > -1 and self.start:
                 seconds = self.work % 60
                 minutes = self.work // 60
