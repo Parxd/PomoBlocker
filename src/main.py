@@ -60,6 +60,38 @@ class App():
             pady = (20, 5)
         )
 
+        self.workframe = ctk.CTkFrame(
+            self.root
+        )
+        self.workframe.grid(
+            row = 1,
+            column = 0,
+            sticky = "NESW",
+            padx = 20,
+            pady = (0, 16)
+        )
+        self.shortbreakframe = ctk.CTkFrame(
+            self.root
+        )
+        self.longbreakframe = ctk.CTkFrame(
+            self.root
+        )
+        self.workframe.grid_rowconfigure((0, 1, 2), weight = 1)
+        self.workframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
+        self.shortbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
+        self.shortbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
+        self.longbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
+        self.longbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
+        for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
+                    frame.grid(
+                        row = 1,
+                        column = 0,
+                        sticky = "NESW",
+                        padx = 20,
+                        pady = (0, 16)
+                    )
+        self.raise_frame(self.workframe)
+
         self.buttonsframe = ctk.CTkFrame(
             self.topframe,
             height = 100,
@@ -118,38 +150,6 @@ class App():
             column = 2,
             padx = 20
         )
-
-        self.workframe = ctk.CTkFrame(
-            self.root
-        )
-        self.workframe.grid(
-            row = 1,
-            column = 0,
-            sticky = "NESW",
-            padx = 20,
-            pady = (0, 16)
-        )
-        self.shortbreakframe = ctk.CTkFrame(
-            self.root
-        )
-        self.longbreakframe = ctk.CTkFrame(
-            self.root
-        )
-        self.workframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.workframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
-        self.shortbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.shortbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
-        self.longbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.longbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
-        for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
-                    frame.grid(
-                        row = 1,
-                        column = 0,
-                        sticky = "NESW",
-                        padx = 20,
-                        pady = (0, 16)
-                    )
-        self.raise_frame(self.workframe)
 
         self.worktimevar = tk.StringVar(value = self.workstring)
         self.worktime = ctk.CTkLabel(
@@ -253,7 +253,9 @@ class App():
             column = 2)
         self.work_restart_button = ctk.CTkButton(
             self.workframe,
+            command = self.restart,
             text = "Restart",
+            text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B"
         )
         self.work_restart_button.grid(
@@ -299,7 +301,9 @@ class App():
         )
         self.short_restart_button = ctk.CTkButton(
             self.shortbreakframe,
+            command = self.restart,
             text = "Restart",
+            text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B"
         )
         self.short_restart_button.grid(
@@ -345,7 +349,9 @@ class App():
         )
         self.long_restart_button = ctk.CTkButton(
             self.longbreakframe,
+            command = self.restart,
             text = "Restart",
+            text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B"
         )
         self.long_restart_button.grid(
@@ -514,6 +520,23 @@ class App():
                     self.long_start_button.configure(state = tk.NORMAL)
             except UnboundLocalError:
                 pass
+    
+    def restart(self):
+        if self.frame == self.workframe:
+            self.work = self.work_const
+            self.worktimevar.set(self.workstring)
+            self.start_bool(False)
+            self.work_start_button.configure(state = tk.NORMAL)
+        elif self.frame == self.shortbreakframe:
+            self.shortbreak = self.shortbreak_const
+            self.shortbreaktimevar.set(self.shortbreakstring)
+            self.start_bool(False)
+            self.short_start_button.configure(state = tk.NORMAL)
+        else:
+            self.longbreak = self.longbreak_const
+            self.longbreaktimevar.set(self.longbreakstring)
+            self.start_bool(False)
+            self.long_start_button.configure(state = tk.NORMAL)
 
 
 def main():
