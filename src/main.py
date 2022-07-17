@@ -22,7 +22,7 @@ class App():
 
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("800x600")
+        self.root.geometry("900x700")
         self.root.title("PomoBlocker")
         self.root.iconbitmap(
             Path(__file__).parent / "..\\res\\media\\pomodoro.ico"
@@ -133,11 +133,11 @@ class App():
             self.root
         )
         self.workframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.workframe.grid_columnconfigure((0, 1, 2), weight = 1)
+        self.workframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
         self.shortbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.shortbreakframe.grid_columnconfigure((0, 1, 2), weight = 1)
+        self.shortbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
         self.longbreakframe.grid_rowconfigure((0, 1, 2), weight = 1)
-        self.longbreakframe.grid_columnconfigure((0, 1, 2), weight = 1)
+        self.longbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
         for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
                     frame.grid(
                         row = 1,
@@ -157,7 +157,7 @@ class App():
         self.worktime.grid(
             row = 0,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
         self.shortbreaktimevar = tk.StringVar(value = self.shortbreakstring)
         self.shortbreaktime = ctk.CTkLabel(
@@ -168,7 +168,7 @@ class App():
         self.shortbreaktime.grid(
             row = 0,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
         self.longbreaktimevar = tk.StringVar(value = self.longbreakstring)
         self.longbreaktime = ctk.CTkLabel(
@@ -179,7 +179,7 @@ class App():
         self.longbreaktime.grid(
             row = 0,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
 
         self.workcounterw = ctk.CTkLabel(
@@ -190,7 +190,7 @@ class App():
         self.workcounterw.grid(
             row = 1,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
         self.workcountersb = ctk.CTkLabel(
             self.shortbreakframe,
@@ -200,7 +200,7 @@ class App():
         self.workcountersb.grid(
             row = 1,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
         self.workcounterlb = ctk.CTkLabel(
             self.longbreakframe,
@@ -210,7 +210,7 @@ class App():
         self.workcounterlb.grid(
             row = 1,
             column = 0,
-            columnspan = 3
+            columnspan = 4
         )
 
         self.work_start_button = ctk.CTkButton(
@@ -248,11 +248,22 @@ class App():
         self.work_skip_button.grid(
             row = 2,
             column = 2)
+        self.work_restart_button = ctk.CTkButton(
+            self.workframe,
+            text = "Restart",
+            fg_color = "#FF775B"
+        )
+        self.work_restart_button.grid(
+            row = 2,
+            column = 3
+        )
+
         self.short_start_button = ctk.CTkButton(
             self.shortbreakframe,
             command = self.startbutton,
             text = "Start",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.short_start_button.grid(
             row = 2,
@@ -265,7 +276,8 @@ class App():
                 self.timer()
                 ],
             text = "Stop",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.short_stop_button.grid(
             row = 2,
@@ -275,17 +287,29 @@ class App():
             self.shortbreakframe,
             command = self.skipbutton,
             text = "Skip",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.short_skip_button.grid(
             row = 2,
             column = 2
         )
+        self.short_restart_button = ctk.CTkButton(
+            self.shortbreakframe,
+            text = "Restart",
+            fg_color = "#FF775B"
+        )
+        self.short_restart_button.grid(
+            row = 2,
+            column = 3
+        )
+
         self.long_start_button = ctk.CTkButton(
             self.longbreakframe,
             command = self.startbutton,
             text = "Start",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.long_start_button.grid(
             row = 2,
@@ -298,7 +322,8 @@ class App():
                 self.timer()
                 ],
             text = "Stop",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.long_stop_button.grid(
             row = 2,
@@ -308,11 +333,21 @@ class App():
             self.longbreakframe,
             command = self.skipbutton,
             text = "Skip",
-            text_font = ("Roboto Medium", 10)
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#FF775B"
         )
         self.long_skip_button.grid(
             row = 2,
             column = 2
+        )
+        self.long_restart_button = ctk.CTkButton(
+            self.longbreakframe,
+            text = "Restart",
+            fg_color = "#FF775B"
+        )
+        self.long_restart_button.grid(
+            row = 2,
+            column = 3
         )
 
     def start_bool(self, state):
@@ -337,6 +372,9 @@ class App():
             if skip:
                 self.workcount += 1
                 self.pomocount += 1
+                self.workcounterw.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
+                self.workcountersb.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
+                self.workcounterlb.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
                 if not self.pomocount % self.cycle_length:
                     self.raise_frame(self.longbreakframe)
                     self.worktimevar.set(self.workstring)
@@ -355,6 +393,8 @@ class App():
                 self.short_start_button.configure(state = tk.NORMAL)
         elif self.frame == self.longbreakframe:
             if skip:
+                self.workcount = 0
+                self.workcounterw.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
                 self.raise_frame(self.workframe)
                 self.start_bool(False)
                 self.longbreaktimevar.set(self.longbreakstring)
@@ -367,7 +407,6 @@ class App():
             else:
                 self.work_start_button.configure(state = tk.NORMAL)
 
-            self.work = 1500
             while self.work > -1 and self.start:
                 seconds = self.work % 60
                 minutes = self.work // 60
@@ -397,7 +436,6 @@ class App():
             else:
                 self.short_start_button.configure(state = tk.NORMAL)
 
-            self.shortbreak = 300
             while self.shortbreak > -1 and self.start:
                 seconds = self.shortbreak % 60
                 minutes = self.shortbreak // 60
@@ -421,7 +459,6 @@ class App():
             else:
                 self.long_start_button.configure(state = tk.NORMAL)
 
-            self.longbreak = 900
             while self.longbreak > -1 and self.start:
                 seconds = self.longbreak % 60
                 minutes = self.longbreak // 60
@@ -431,6 +468,7 @@ class App():
                 self.longbreak -= 1
             try:
                 if not seconds and not minutes:
+                    self.workcount = 0
                     self.start_bool(False)
                     self.raise_frame(self.workframe)
                     self.longbreaktimevar.set(self.longbreakstring)
