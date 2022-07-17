@@ -7,18 +7,21 @@ import customtkinter as ctk
 
 class App():
     start = False
-    work = 1500
-    shortbreak = 300
-    longbreak = 900
-    workstring = f"{work // 60:02d} : {work % 60:02d}"
-    shortbreakstring = f"{shortbreak // 60:02d} : {shortbreak % 60:02d}"
-    longbreakstring = f"{longbreak // 60:02d} : {longbreak % 60:02d}"
+    work_const = 1500
+    work = work_const
+    shortbreak_const = 300
+    shortbreak = shortbreak_const
+    longbreak_const = 900
+    longbreak = longbreak_const
+    workstring = f"{work_const // 60:02d} : {work_const % 60:02d}"
+    shortbreakstring = f"{shortbreak_const // 60:02d} : {shortbreak_const % 60:02d}"
+    longbreakstring = f"{longbreak_const // 60:02d} : {longbreak_const % 60:02d}"
     pomocount = 0
-    cycle_length = 7
+    cycle_length = 5
 
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("800x600")
+        self.root.geometry("800x400")
         self.root.grid_rowconfigure((0, 1, 2), weight = 1)
         self.root.grid_columnconfigure((0, 1), weight = 1)
 
@@ -34,7 +37,7 @@ class App():
             self.root,
             width = 500
         )
-        for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
+        for frame in (self.longbreakframe, self.shortbreakframe, self.workframe):
             frame.grid(
                 row = 0,
                 column = 1,
@@ -42,7 +45,7 @@ class App():
                 sticky = "NSEW"
         )
         self.raise_frame(self.workframe)
-
+ 
         self.showworkframe = ctk.CTkButton(
             self.root,
             command = lambda: self.raise_frame(self.workframe),
@@ -239,11 +242,20 @@ class App():
         if self.frame == self.workframe:
             if skip:
                 self.pomocount += 1
+                self.work = self.work_const
+                self.showshortbreakframe.configure(state = tk.NORMAL)
+                self.showlongbreakframe.configure(state = tk.NORMAL)
                 if not self.pomocount % self.cycle_length:
+                    self.longbreak = self.longbreak_const
+                    self.longbreaktimevar.set(self.longbreakstring)
+
                     self.raise_frame(self.longbreakframe)
                     self.worktimevar.set(self.workstring)
                     self.work_start_button.configure(state = tk.NORMAL)
                 else:
+                    self.shortbreak = self.shortbreak_const
+                    self.shortbreaktimevar.set(self.shortbreakstring)
+
                     self.raise_frame(self.shortbreakframe)
                     self.start_bool(False)
                     self.worktimevar.set(self.workstring)
@@ -251,14 +263,26 @@ class App():
         elif self.frame == self.shortbreakframe:
             if skip:
                 self.pomocount += 1
+                self.shortbreak = self.shortbreak_const
+                self.showworkframe.configure(state = tk.NORMAL)
+                self.showlongbreakframe.configure(state = tk.NORMAL)
                 self.raise_frame(self.workframe)
                 self.start_bool(False)
+
+                self.work = self.work_const
+                self.worktimevar.set(self.workstring)
                 self.shortbreaktimevar.set(self.shortbreakstring)
                 self.short_start_button.configure(state = tk.NORMAL)
         elif self.frame == self.longbreakframe:
             if skip:
+                self.showworkframe.configure(state = tk.NORMAL)
+                self.showshortbreakframe.configure(state = tk.NORMAL)
+                self.longbreak = self.longbreak_const
                 self.raise_frame(self.workframe)
                 self.start_bool(False)
+
+                self.work = self.work_const
+                self.worktimevar.set(self.workstring)
                 self.longbreaktimevar.set(self.longbreakstring)
                 self.long_start_button.configure(state = tk.NORMAL)
 
@@ -266,6 +290,8 @@ class App():
         if self.frame == self.workframe:
             if self.start:
                 self.work_start_button.configure(state = tk.DISABLED)
+                self.showshortbreakframe.configure(state = tk.DISABLED)
+                self.showlongbreakframe.configure(state = tk.DISABLED)
             else:
                 self.work_start_button.configure(state = tk.NORMAL)
 
@@ -280,6 +306,8 @@ class App():
                 if not seconds and not minutes:
                     self.start_bool(False)
                     self.pomocount += 1
+                    self.showshortbreakframe.configure(state = tk.NORMAL)
+                    self.showlongbreakframe.configure(state = tk.NORMAL)
                     if not self.pomocount % self.cycle_length:
                         self.raise_frame(self.longbreakframe)
                         self.worktimevar.set(self.workstring)
@@ -294,6 +322,8 @@ class App():
         elif self.frame == self.shortbreakframe:
             if self.start:
                 self.short_start_button.configure(state = tk.DISABLED)
+                self.showworkframe.configure(state = tk.DISABLED)
+                self.showlongbreakframe.configure(state = tk.DISABLED)
             else:
                 self.short_start_button.configure(state = tk.NORMAL)
 
@@ -308,6 +338,10 @@ class App():
                 if not seconds and not minutes:
                     self.start_bool(False)
                     self.pomocount += 1
+                    self.showworkframe.configure(state = tk.NORMAL)
+                    self.showlongbreakframe.configure(state = tk.NORMAL)
+    
+                    self.worktimevar.set(self.workstring)
                     self.raise_frame(self.workframe)
                     self.shortbreaktimevar.set(self.shortbreakstring)
                     self.short_start_button.configure(state = tk.NORMAL)
@@ -317,6 +351,8 @@ class App():
         else:
             if self.start:
                 self.long_start_button.configure(state = tk.DISABLED)
+                self.showworkframe.configure(state = tk.DISABLED)
+                self.showshortbreakframe.configure(state = tk.DISABLED)
             else:
                 self.long_start_button.configure(state = tk.NORMAL)
 
@@ -331,6 +367,9 @@ class App():
                 if not seconds and not minutes:
                     self.start_bool(False)
                     self.raise_frame(self.workframe)
+                    self.showworkframe.configure(state = tk.NORMAL)
+                    self.showshortbreakframe.configure(state = tk.NORMAL)
+
                     self.longbreaktimevar.set(self.longbreakstring)
                     self.long_start_button.configure(state = tk.NORMAL)
             except UnboundLocalError:
