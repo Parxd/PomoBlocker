@@ -660,12 +660,3 @@ class Settings():
             playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
         elif self.radiovar.get() == 5:
             playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
-
-
-def main():
-    settings = Settings()
-    settings.master.mainloop()
-
-
-if __name__ == '__main__':
-    main()

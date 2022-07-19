@@ -3,6 +3,7 @@ import threading
 from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox
+from PIL import ImageTk, Image
 import customtkinter as ctk
 
 ctk.set_appearance_mode("dark")
@@ -30,34 +31,23 @@ class App():
         self.root.iconbitmap(
             Path(__file__).parent / "..\\res\\media\\pomodoro.ico"
         )
-        self.root.grid_columnconfigure(0, weight = 1)
-        self.root.grid_rowconfigure(1, weight = 1)
+        self.root.grid_columnconfigure(0, weight = 1, uniform = "column")
+        self.root.grid_columnconfigure(1, weight = 1, uniform = "column")
+        self.root.grid_columnconfigure(2, weight = 1, uniform = "column")
+        self.root.grid_rowconfigure(0, weight = 1)
+        self.root.grid_rowconfigure(1, weight = 2)
+        self.root.grid_rowconfigure(2, weight = 12)
 
-        self.topframe = ctk.CTkFrame(
-            self.root,
-            width = 150,
-            corner_radius = 8,
-        )
-        self.topframe.grid(
-            row = 0,
-            column = 0,
-            sticky = "EW",
-            padx = 20,
-            pady = 15
-        )
-        self.topframe.grid_rowconfigure((0, 1), weight = 1)
-        self.topframe.grid_columnconfigure(0, weight = 1)
         self.title_label = ctk.CTkLabel(
-            self.topframe,
+            self.root,
             text = "PomoBlocker",
-            text_font = ("Roboto Medium", 20),
+            text_font = ("Roboto Medium", 24),
             text_color = "#FFFFFF"
         )
         self.title_label.grid(
             row = 0,
-            column = 0,
-            padx = 20,
-            pady = (20, 5)
+            column = 1,
+            sticky = "S"
         )
 
         self.workframe = ctk.CTkFrame(
@@ -84,25 +74,25 @@ class App():
         self.longbreakframe.grid_columnconfigure((0, 1, 2, 3), weight = 1)
         for frame in (self.workframe, self.shortbreakframe, self.longbreakframe):
                     frame.grid(
-                        row = 1,
+                        row = 2,
                         column = 0,
+                        columnspan = 3,
                         sticky = "NESW",
                         padx = 20,
-                        pady = (0, 16)
+                        pady = (0, 20)
                     )
         self.raise_frame(self.workframe)
 
         self.buttonsframe = ctk.CTkFrame(
-            self.topframe,
-            height = 100,
-            width = 800
+            self.root,
+            height = 100
         )
         self.buttonsframe.grid(
             row = 1,
             column = 0,
+            columnspan = 3,
             padx = 20,
-            pady = 20,
-            sticky = "NESW"
+            sticky = "EW"
         )
         self.buttonsframe.grid_rowconfigure(0, weight = 1)
         self.buttonsframe.grid_columnconfigure((0, 1, 2), weight = 1)
@@ -149,6 +139,104 @@ class App():
             row = 0,
             column = 2,
             padx = 20
+        )
+
+        menuimage = ImageTk.PhotoImage(Image.open(
+            Path(__file__).parent / "../res/media/menu.png"
+            ))
+        self.showmenu = ctk.CTkButton(
+            self.root,
+            command = self.show_menu,
+            text = "",
+            image = menuimage,
+            width = 60,
+            fg_color = "#212325",
+            hover_color = "#FF775B"
+        )
+        self.showmenu.grid(
+            row = 0,
+            column = 0,
+            sticky = "SW",
+            padx = (30, 0)
+        )
+        self.menuframe = ctk.CTkFrame(
+            self.root,
+            fg_color = "#26282A"
+        )
+        self.menuframe.grid_rowconfigure(0, weight = 2)
+        self.menuframe.grid_rowconfigure(1, weight = 3)
+        self.menuframe.grid_rowconfigure(2, weight = 3)
+        self.menuframe.grid_rowconfigure(3, weight = 3)
+        self.menuframe.grid_columnconfigure(0, weight = 1)
+        closeimage = ImageTk.PhotoImage(Image.open(
+           Path(__file__).parent / "../res/media/close.png"
+            ))
+        self.closemenu = ctk.CTkButton(
+            self.menuframe,
+            command = self.close,
+            text = "",
+            image = closeimage,
+            fg_color = "#26282A",
+            hover_color = "#26282A"
+        )
+        self.closemenu.grid(
+            row = 0,
+            column = 0,
+            padx = 35
+        )
+        loginimage = ImageTk.PhotoImage(Image.open(
+           Path(__file__).parent / "../res/media/login.png"
+            ))
+        self.login = ctk.CTkButton(
+            self.menuframe,
+            command = self.open_login,
+            text = "",
+            image = loginimage,
+            height = 75,
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#26282A",
+            hover_color = "#FF775B"
+        )
+        self.login.grid(
+            row = 3,
+            column = 0,
+            padx = 35
+        )
+        reportimage = ImageTk.PhotoImage(Image.open(
+           Path(__file__).parent / "../res/media/report.png"
+            ))
+        self.report = ctk.CTkButton(
+            self.menuframe,
+            command = self.open_summary,
+            text = "",
+            image = reportimage,
+            height = 75,
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#26282A",
+            hover_color = "#FF775B"
+        )
+        self.report.grid(
+            row = 2,
+            column = 0,
+            padx = 35
+        )
+        settingsimage = ImageTk.PhotoImage(Image.open(
+           Path(__file__).parent / "../res/media/settings_menu.png"
+            ))
+        self.settings = ctk.CTkButton(
+            self.menuframe,
+            command = self.open_settings,
+            text = "",
+            image = settingsimage,
+            height = 75,
+            text_font = ("Roboto Medium", 10),
+            fg_color = "#26282A",
+            hover_color = "#FF775B"
+        )
+        self.settings.grid(
+            row = 1,
+            column = 0,
+            padx = 35
         )
 
         self.worktimevar = tk.StringVar(value = self.workstring)
@@ -537,6 +625,27 @@ class App():
             self.longbreaktimevar.set(self.longbreakstring)
             self.start_bool(False)
             self.long_start_button.configure(state = tk.NORMAL)
+    
+    def show_menu(self):
+        self.menuframe.grid(
+            row = 0,
+            rowspan = 3,
+            column = 0,
+            sticky = "NWS"
+        )
+        self.menuframe.tkraise()
+
+    def close(self):
+        self.menuframe.grid_forget()
+
+    def open_settings(self):
+        pass
+    
+    def open_login(self):
+        pass
+
+    def open_summary(self):
+        pass
 
 
 def main():
