@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import customtkinter as ctk
+from settings import Settings
 
 ctk.set_appearance_mode("dark")
 
@@ -639,7 +640,8 @@ class App():
         self.menuframe.grid_forget()
 
     def open_settings(self):
-        pass
+        settings = Settings(self.root)
+        settings.grab_set()
 
     def open_login(self):
         pass

@@ -9,23 +9,24 @@ from playsound import playsound
 ctk.set_appearance_mode("Dark")
 
 
-class Settings():
-    def __init__(self):
-        self.master = ctk.CTk()
-        self.master.title("Settings")
-        self.master.geometry("800x740")
-        self.master.iconbitmap(
+class Settings(ctk.CTkToplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.title("Settings")
+        self.geometry("800x740")
+        self.iconbitmap(
             Path(__file__).parent / "../res/media/settings.ico"
         )
-        self.master.grid_rowconfigure(0, weight = 1)
-        self.master.grid_rowconfigure(1, weight = 1)
-        self.master.grid_columnconfigure((1, 2, 3), weight = 1)
+        self.grid_rowconfigure(0, weight = 1)
+        self.grid_rowconfigure(1, weight = 1)
+        self.grid_columnconfigure((1, 2, 3), weight = 1)
         self.entries = []
         self.websites = []
 
         ''' ----- Initialize tab frame & main three buttons ----- '''
         self.tabframe = ctk.CTkFrame(
-            self.master,
+            self,
             width = 150,
             corner_radius = 0,
         )
@@ -121,17 +122,17 @@ class Settings():
 
         ''' -------- Initialize main three frames -------- '''
         self.time_settings_frame = ctk.CTkFrame(
-            self.master,
+            self,
             width = 200,
             corner_radius = 8
         )
         self.websites_settings_frame = ctk.CTkFrame(
-            self.master,
+            self,
             width = 200,
             corner_radius = 8
         )
         self.notifications_settings_frame = ctk.CTkFrame(
-            self.master,
+            self,
             width = 200,
             corner_radius = 8
         )
@@ -184,7 +185,7 @@ class Settings():
         self.worklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Work time",
-            text_font = ("Helvetica Medium", 11),
+            text_font = ("Roboto Medium", 11),
         )
         self.worklabel.grid(
             row = 1,
@@ -220,7 +221,7 @@ class Settings():
         self.shortbreaklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Short break time",
-            text_font = ("Helvetica Medium", 11)
+            text_font = ("Roboto Medium", 11)
         )
         self.shortbreaklabel.grid(
             row = 2,
@@ -256,7 +257,7 @@ class Settings():
         self.longbreaklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Long break time",
-            text_font = ("Helvetica Medium", 11)
+            text_font = ("Roboto Medium", 11)
         )
         self.longbreaklabel.grid(
             row = 3,
@@ -293,7 +294,7 @@ class Settings():
         )
 
         self.save = ctk.CTkButton(
-            self.master,
+            self,
             command = self.save_inputs,
             text = "Save",
             text_font = ("Roboto Medium", 10),
@@ -367,7 +368,7 @@ class Settings():
                         "Notice",
                         "Information saved!"
                     )
-                    self.master.destroy()
+                    self.destroy()
 
     def reset_inputs(self):
         if messagebox.askyesno(
