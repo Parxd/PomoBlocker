@@ -105,6 +105,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
+            hover_color = "#FF8B6F",
             text_font = ("Roboto Medium", 11)
         )
         self.showworkframe.grid(
@@ -119,6 +120,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
+            hover_color = "#FF8B6F",
             text_font = ("Roboto Medium", 11)
         )
         self.showshortbreakframe.grid(
@@ -134,6 +136,7 @@ class App():
             width = 200,
             height = 35,
             fg_color = "#FF775B",
+            hover_color = "#FF8B6F",
             text_font = ("Roboto Medium", 11)
         )
         self.showlongbreakframe.grid(
@@ -310,7 +313,8 @@ class App():
             command = self.startbutton,
             text = "Start",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.work_start_button.grid(
             row = 2,
@@ -324,7 +328,8 @@ class App():
                 ],
             text = "Stop",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
             )
         self.work_stop_button.grid(
             row = 2,
@@ -335,7 +340,8 @@ class App():
             command = self.skipbutton,
             text = "Skip",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.work_skip_button.grid(
             row = 2,
@@ -345,7 +351,8 @@ class App():
             command = self.restart,
             text = "Restart",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.work_restart_button.grid(
             row = 2,
@@ -357,7 +364,8 @@ class App():
             command = self.startbutton,
             text = "Start",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.short_start_button.grid(
             row = 2,
@@ -371,7 +379,8 @@ class App():
                 ],
             text = "Stop",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.short_stop_button.grid(
             row = 2,
@@ -382,7 +391,8 @@ class App():
             command = self.skipbutton,
             text = "Skip",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.short_skip_button.grid(
             row = 2,
@@ -393,7 +403,8 @@ class App():
             command = self.restart,
             text = "Restart",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.short_restart_button.grid(
             row = 2,
@@ -405,7 +416,8 @@ class App():
             command = self.startbutton,
             text = "Start",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.long_start_button.grid(
             row = 2,
@@ -419,7 +431,8 @@ class App():
                 ],
             text = "Stop",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.long_stop_button.grid(
             row = 2,
@@ -430,7 +443,8 @@ class App():
             command = self.skipbutton,
             text = "Skip",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.long_skip_button.grid(
             row = 2,
@@ -441,7 +455,8 @@ class App():
             command = self.restart,
             text = "Restart",
             text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B"
+            fg_color = "#FF775B",
+            hover_color = "#FF8B6F"
         )
         self.long_restart_button.grid(
             row = 2,
