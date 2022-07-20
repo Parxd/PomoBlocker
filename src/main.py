@@ -640,7 +640,7 @@ class App():
 
     def open_settings(self):
         pass
-    
+
     def open_login(self):
         pass
 
