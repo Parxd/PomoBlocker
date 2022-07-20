@@ -369,6 +369,12 @@ class Settings(ctk.CTkToplevel):
                         "Information saved!"
                     )
                     self.destroy()
+            else:
+                messagebox.showinfo(
+                        "Notice",
+                        "Information saved!"
+                    )
+                self.destroy()
 
     def reset_inputs(self):
         if messagebox.askyesno(

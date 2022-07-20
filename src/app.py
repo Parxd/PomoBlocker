@@ -640,8 +640,7 @@ class App():
         self.menuframe.grid_forget()
 
     def open_settings(self):
-        settings = Settings(self.root)
-        settings.grab_set()
+        Settings(self.root)
 
     def open_login(self):
         pass
