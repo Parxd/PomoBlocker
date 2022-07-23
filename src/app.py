@@ -6,17 +6,18 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import customtkinter as ctk
 from settings import Settings
+import blocker
 
 ctk.set_appearance_mode("dark")
 
 
 class App():
     start = False
-    work_const = 1500
+    work_const = 1
     work = work_const
-    shortbreak_const = 300
+    shortbreak_const = 2
     shortbreak = shortbreak_const
-    longbreak_const = 900
+    longbreak_const = 3
     longbreak = longbreak_const
     workstring = f"{work_const // 60:02d} : {work_const % 60:02d}"
     shortbreakstring = f"{shortbreak_const // 60:02d} : {shortbreak_const % 60:02d}"
@@ -495,6 +496,7 @@ class App():
                     self.longbreak = self.longbreak_const
                     self.longbreaktimevar.set(self.longbreakstring)
 
+                    self.workcounterlb.configure(text_color = "#FF775B")
                     self.raise_frame(self.longbreakframe)
                     self.worktimevar.set(self.workstring)
                     self.work_start_button.configure(state = tk.NORMAL)
