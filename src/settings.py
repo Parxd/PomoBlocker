@@ -23,9 +23,10 @@ class Settings(ctk.CTkToplevel):
         self.grid_columnconfigure((1, 2, 3), weight = 1)
         self.entries = []
         self.websites = []
-        self.worktime = 0
-        self.shortbreaktime = 0
-        self.longbreaktime = 0
+
+        self.worktime = 25
+        self.shortbreaktime = 5
+        self.longbreaktime = 15
 
         ''' ----- Initialize tab frame & main three buttons ----- '''
         self.tabframe = ctk.CTkFrame(
@@ -371,13 +372,13 @@ class Settings(ctk.CTkToplevel):
                         "Notice",
                         "Information saved!"
                     )
-                    # self.destroy()
+                    self.destroy()
             else:
                 messagebox.showinfo(
                         "Notice",
                         "Information saved!"
                     )
-                # self.destroy()
+                self.destroy()
 
     def reset_inputs(self):
         if messagebox.askyesno(

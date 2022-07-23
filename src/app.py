@@ -653,9 +653,27 @@ class App():
 
     def close(self):
         self.menuframe.grid_forget()
+        # Put below code somewhere else, needs to be triggered without user HAVING to close the menu frame
+        try:
+            self.work_const = self.settings.worktime * 60
+            self.work = self.work_const
+            self.shortbreak_const = self.settings.shortbreaktime * 60
+            self.shortbreak = self.shortbreak_const
+            self.longbreak_const = self.settings.longbreaktime * 60
+            self.longbreak = self.longbreak_const
+
+            self.workstring = f"{self.work_const // 60:02d} : {self.work_const % 60:02d}"
+            self.shortbreakstring = f"{self.shortbreak_const // 60:02d} : {self.shortbreak_const % 60:02d}"
+            self.longbreakstring = f"{self.longbreak_const // 60:02d} : {self.longbreak_const % 60:02d}"
+
+            self.worktimevar.set(tk.StringVar(value = self.workstring).get())
+            self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
+            self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
+        except AttributeError:
+            pass
 
     def open_settings(self):
-        Settings(self.root)
+        self.settings = Settings(self.root)
 
     def open_login(self):
         pass
