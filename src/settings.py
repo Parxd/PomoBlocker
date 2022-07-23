@@ -157,7 +157,8 @@ class Settings(ctk.CTkToplevel):
         self.raise_frame(self.time_settings_frame)
 
         ''' ----- Initialize widgets inside the time settings frame ----- '''
-        self.time_settings_frame.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight = 1)
+        self.time_settings_frame.grid_rowconfigure(0, weight = 3)
+        self.time_settings_frame.grid_rowconfigure((1, 2, 3, 4, 5), weight = 2)
         self.time_settings_frame.grid_columnconfigure((0, 1, 2), weight = 1)
 
         self.time_settings_instructions = ctk.CTkLabel(
@@ -169,8 +170,7 @@ class Settings(ctk.CTkToplevel):
         self.time_settings_instructions.grid(
             row = 0,
             column = 0,
-            columnspan = 3,
-            pady = (15, 0)
+            columnspan = 3
         )
 
         self.workimg = ImageTk.PhotoImage(Image.open(
@@ -283,19 +283,43 @@ class Settings(ctk.CTkToplevel):
         )
         self.longbreakinput.set("")
 
-        self.autostartinput = ctk.CTkCheckBox(
+        self.worknumimg = ImageTk.PhotoImage(Image.open(
+          Path(__file__).parent / "../res/media/pencil.png"  
+        ))
+        self.worknumimglabel = ctk.CTkLabel(
             self.time_settings_frame,
-            text = "Auto-start cycles?",
-            text_font = ("Roboto Medium", 10),
-            fg_color = "#FF775B",
-            hover_color = "#FF9579"
+            image = self.worknumimg
         )
-        self.autostartinput.grid(
+        self.worknumimglabel.grid(
+            row = 4,
+            column = 0,
+        )
+        self.worknumlabel = ctk.CTkLabel(
+            self.time_settings_frame,
+            text = "Number of work cycles",
+            text_font = ("Roboto Medium", 11)
+        )
+        self.worknumlabel.grid(
+            row = 4,
+            column = 1,
+            pady = (10, 0)
+        )
+        self.worknum = ctk.CTkOptionMenu(
+            self.time_settings_frame,
+            width = 120,
+            text_font = ("Helvetica Medium", 11),
+            values = [i for i in range(2, 11)],
+            fg_color = "grey35",
+            button_color = "#FF775B",
+            button_hover_color = "#FF8B6F"
+        )
+        self.worknum.grid(
             row = 4,
             column = 2,
             padx = (0, 15),
-            pady = (10, 0)
+            pady = (11, 0)
         )
+        self.worknum.set(4)
 
         self.save = ctk.CTkButton(
             self,
@@ -338,7 +362,7 @@ class Settings(ctk.CTkToplevel):
         self.worktime = self.workinput.get()
         self.shortbreaktime = self.shortbreakinput.get()
         self.longbreaktime = self.longbreakinput.get()
-        self.autostart = self.autostartinput.get()
+        self.workcycles = self.worknum.get()
         for entry in self.entries:
             self.websites.append(entry.get())
         self.parse(self.websites)

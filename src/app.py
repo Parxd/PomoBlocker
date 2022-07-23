@@ -23,7 +23,7 @@ class App():
     longbreakstring = f"{longbreak_const // 60:02d} : {longbreak_const % 60:02d}"
     workcount = 0
     pomocount = 0
-    cycle_length = 7
+    workcycles = 4
 
     def __init__(self):
         self.root = ctk.CTk()
@@ -279,7 +279,7 @@ class App():
 
         self.workcounterw = ctk.CTkLabel(
             self.workframe,
-            text = f"0 / {self.cycle_length - 3}",
+            text = f"0 / {self.workcycles}",
             text_font = ("Roboto Medium", 15)
         )
         self.workcounterw.grid(
@@ -289,7 +289,7 @@ class App():
         )
         self.workcountersb = ctk.CTkLabel(
             self.shortbreakframe,
-            text = f"0 / {self.cycle_length - 3}",
+            text = f"0 / {self.workcycles}",
             text_font = ("Roboto Medium", 15)
         )
         self.workcountersb.grid(
@@ -299,7 +299,7 @@ class App():
         )
         self.workcounterlb = ctk.CTkLabel(
             self.longbreakframe,
-            text = f"0 / {self.cycle_length - 3}",
+            text = f"0 / {self.workcycles}",
             text_font = ("Roboto Medium", 15)
         )
         self.workcounterlb.grid(
@@ -485,13 +485,13 @@ class App():
             if skip:
                 self.workcount += 1
                 self.pomocount += 1
-                self.workcounterw.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
-                self.workcountersb.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
-                self.workcounterlb.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
+                self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+                self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+                self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.work = self.work_const
                 self.showshortbreakframe.configure(state = tk.NORMAL)
                 self.showlongbreakframe.configure(state = tk.NORMAL)
-                if not self.pomocount % self.cycle_length:
+                if self.workcount == self.workcycles:
                     self.longbreak = self.longbreak_const
                     self.longbreaktimevar.set(self.longbreakstring)
 
@@ -508,7 +508,6 @@ class App():
                     self.work_start_button.configure(state = tk.NORMAL)
         elif self.frame == self.shortbreakframe:
             if skip:
-                self.pomocount += 1
                 self.shortbreak = self.shortbreak_const
                 self.showworkframe.configure(state = tk.NORMAL)
                 self.showlongbreakframe.configure(state = tk.NORMAL)
@@ -519,10 +518,12 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.shortbreaktimevar.set(self.shortbreakstring)
                 self.short_start_button.configure(state = tk.NORMAL)
-        elif self.frame == self.longbreakframe:
+                if self.workcount:
+                    self.pomocount += 1
+        else:
             if skip:
                 self.workcount = 0
-                self.workcounterw.configure(text = f"{self.workcount} / {self.cycle_length - 3}")
+                self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.showworkframe.configure(state = tk.NORMAL)
                 self.showshortbreakframe.configure(state = tk.NORMAL)
                 self.longbreak = self.longbreak_const
@@ -533,6 +534,8 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.longbreaktimevar.set(self.longbreakstring)
                 self.long_start_button.configure(state = tk.NORMAL)
+                if self.workcount:
+                    self.pomocount += 1 # Only add to pomocount if there's already a work cycle done
 
     def timer(self):
         if self.frame == self.workframe:
@@ -555,9 +558,13 @@ class App():
                     self.start_bool(False)
                     self.workcount += 1
                     self.pomocount += 1
+                    self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.work = self.work_const
                     self.showshortbreakframe.configure(state = tk.NORMAL)
                     self.showlongbreakframe.configure(state = tk.NORMAL)
-                    if not self.pomocount % self.cycle_length:
+                    if self.workcount == self.workcycles:
                         self.raise_frame(self.longbreakframe)
                         self.worktimevar.set(self.workstring)
                         self.work_start_button.configure(state = tk.NORMAL)
@@ -586,14 +593,17 @@ class App():
             try:
                 if not seconds and not minutes:
                     self.start_bool(False)
-                    self.pomocount += 1
+                    self.shortbreak = self.shortbreak_const
                     self.showworkframe.configure(state = tk.NORMAL)
                     self.showlongbreakframe.configure(state = tk.NORMAL)
     
-                    self.worktimevar.set(self.workstring)
                     self.raise_frame(self.workframe)
+                    self.work = self.work_const
+                    self.worktimevar.set(self.workstring)
                     self.shortbreaktimevar.set(self.shortbreakstring)
                     self.short_start_button.configure(state = tk.NORMAL)
+                    if self.workcount:
+                        self.pomocount += 1
             except UnboundLocalError:
                 pass
 
@@ -614,14 +624,20 @@ class App():
                 self.longbreak -= 1
             try:
                 if not seconds and not minutes:
-                    self.workcount = 0
                     self.start_bool(False)
-                    self.raise_frame(self.workframe)
+                    self.workcount = 0
+                    self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                     self.showworkframe.configure(state = tk.NORMAL)
                     self.showshortbreakframe.configure(state = tk.NORMAL)
+                    self.longbreak = self.longbreak_const
 
+                    self.raise_frame(self.workframe)
+                    self.work = self.work_const
+                    self.worktimevar.set(self.workstring)
                     self.longbreaktimevar.set(self.longbreakstring)
                     self.long_start_button.configure(state = tk.NORMAL)
+                    if self.workcount:
+                        self.pomocount += 1
             except UnboundLocalError:
                 pass
     
@@ -669,6 +685,11 @@ class App():
             self.worktimevar.set(tk.StringVar(value = self.workstring).get())
             self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
             self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
+
+            self.workcycles = self.settings.workcycles
+            self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+            self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+            self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
         except AttributeError:
             pass
 
@@ -676,10 +697,16 @@ class App():
         self.settings = Settings(self.root)
 
     def open_login(self):
-        pass
+        messagebox.showinfo(
+            "PomoBlocker",
+            "Login feature coming soon!"
+        )
 
     def open_summary(self):
-        pass
+        messagebox.showinfo(
+            "PomoBlocker",
+            "Pomodoro summary feature coming soon!"
+        )
 
 
 def main():
