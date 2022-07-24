@@ -540,28 +540,6 @@ class App():
                     self.pomocount += 1 # Only add to pomocount if there's already a work cycle done
 
     def timer(self):
-        try:
-            self.work_const = self.settings.worktime * 60
-            self.work = self.work_const
-            self.shortbreak_const = self.settings.shortbreaktime * 60
-            self.shortbreak = self.shortbreak_const
-            self.longbreak_const = self.settings.longbreaktime * 60
-            self.longbreak = self.longbreak_const
-
-            self.workstring = f"{self.work_const // 60:02d} : {self.work_const % 60:02d}"
-            self.shortbreakstring = f"{self.shortbreak_const // 60:02d} : {self.shortbreak_const % 60:02d}"
-            self.longbreakstring = f"{self.longbreak_const // 60:02d} : {self.longbreak_const % 60:02d}"
-
-            self.worktimevar.set(tk.StringVar(value = self.workstring).get())
-            self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
-            self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
-
-            self.workcycles = self.settings.workcycles
-            self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
-            self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
-            self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
-        except AttributeError:
-            pass        
         if self.frame == self.workframe:
             if self.start:
                 self.work_start_button.configure(state = tk.DISABLED)
@@ -696,6 +674,31 @@ class App():
 
     def open_settings(self):
         self.settings = Settings(self.root)
+        self.settings.focus_set()
+        self.settings.grab_set()
+        self.settings.wait_window()
+        try:
+            self.work_const = self.settings.worktime * 60
+            self.work = self.work_const
+            self.shortbreak_const = self.settings.shortbreaktime * 60
+            self.shortbreak = self.shortbreak_const
+            self.longbreak_const = self.settings.longbreaktime * 60
+            self.longbreak = self.longbreak_const
+
+            self.workstring = f"{self.work_const // 60:02d} : {self.work_const % 60:02d}"
+            self.shortbreakstring = f"{self.shortbreak_const // 60:02d} : {self.shortbreak_const % 60:02d}"
+            self.longbreakstring = f"{self.longbreak_const // 60:02d} : {self.longbreak_const % 60:02d}"
+
+            self.worktimevar.set(tk.StringVar(value = self.workstring).get())
+            self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
+            self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
+
+            self.workcycles = self.settings.workcycles
+            self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+            self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+            self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
+        except AttributeError:
+            pass
 
     def open_login(self):
         messagebox.showinfo(

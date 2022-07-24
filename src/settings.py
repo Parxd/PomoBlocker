@@ -159,7 +159,7 @@ class Settings(ctk.CTkToplevel):
         ''' ----- Initialize widgets inside the time settings frame ----- '''
         self.time_settings_frame.grid_rowconfigure(0, weight = 3)
         self.time_settings_frame.grid_rowconfigure((1, 2, 3, 4, 5), weight = 2)
-        self.time_settings_frame.grid_columnconfigure((0, 1, 2), weight = 1)
+        self.time_settings_frame.grid_columnconfigure((0, 1), weight = 1)
 
         self.time_settings_instructions = ctk.CTkLabel(
             self.time_settings_frame,
@@ -173,19 +173,6 @@ class Settings(ctk.CTkToplevel):
             columnspan = 3
         )
 
-        self.workimg = ImageTk.PhotoImage(Image.open(
-            Path(__file__).parent / "../res/media/working.png"
-            ))
-        self.workimglabel = ctk.CTkLabel(
-            self.time_settings_frame,
-            image = self.workimg,
-            width = 5,
-            height = 5
-        )
-        self.workimglabel.grid(
-            row = 1,
-            column = 0,
-        )
         self.worklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Work time",
@@ -193,35 +180,20 @@ class Settings(ctk.CTkToplevel):
         )
         self.worklabel.grid(
             row = 1,
-            column = 1,
+            column = 0
         )
-        self.workinput = ctk.CTkOptionMenu(
+        self.workinput = ctk.CTkEntry(
             self.time_settings_frame,
             width = 120,
-            text_font = ("Helvetica Medium", 11),
-            values = [i for i in range(15, 31)],
-            fg_color = "grey35",
-            button_color = "#FF775B",
-            button_hover_color = "#FF8B6F"
+            text_font = ("Roboto Medium", 11),
+            justify = "center",
+            placeholder_text = 25
         )
         self.workinput.grid(
             row = 1,
-            column = 2,
-            padx = (0, 15)
+            column = 1
         )
-        self.workinput.set("")
 
-        self.shortbreakimg = ImageTk.PhotoImage(Image.open(
-            Path(__file__).parent / "../res/media/coffee.png"
-        ))
-        self.shortbreakimglabel = ctk.CTkLabel(
-            self.time_settings_frame,
-            image = self.shortbreakimg
-        )
-        self.shortbreakimglabel.grid(
-            row = 2,
-            column = 0,
-        )
         self.shortbreaklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Short break time",
@@ -229,35 +201,20 @@ class Settings(ctk.CTkToplevel):
         )
         self.shortbreaklabel.grid(
             row = 2,
-            column = 1,
+            column = 0
         )
-        self.shortbreakinput = ctk.CTkOptionMenu(
+        self.shortbreakinput = ctk.CTkEntry(
             self.time_settings_frame,
             width = 120,
-            text_font = ("Helvetica Medium", 11),
-            values = [i for i in range(1, 11)],
-            fg_color = "grey35",
-            button_color = "#FF775B",
-            button_hover_color = "#FF8B6F"
+            text_font = ("Roboto Medium", 11),
+            justify = "center",
+            placeholder_text = 5
         )
         self.shortbreakinput.grid(
             row = 2,
-            column = 2,
-            padx = (0, 15)
+            column = 1
         )
-        self.shortbreakinput.set("")
 
-        self.longbreakimg = ImageTk.PhotoImage(Image.open(
-          Path(__file__).parent / "../res/media/pillow.png"  
-        ))
-        self.longbreakimglabel = ctk.CTkLabel(
-            self.time_settings_frame,
-            image = self.longbreakimg
-        )
-        self.longbreakimglabel.grid(
-            row = 3,
-            column = 0,
-        )
         self.longbreaklabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Long break time",
@@ -265,35 +222,20 @@ class Settings(ctk.CTkToplevel):
         )
         self.longbreaklabel.grid(
             row = 3,
-            column = 1,
+            column = 0
         )
-        self.longbreakinput = ctk.CTkOptionMenu(
+        self.longbreakinput = ctk.CTkEntry(
             self.time_settings_frame,
             width = 120,
-            text_font = ("Helvetica Medium", 11),
-            values = [i for i in range(15, 26)],
-            fg_color = "grey35",
-            button_color = "#FF775B",
-            button_hover_color = "#FF8B6F"
+            text_font = ("Roboto Medium", 11),
+            justify = "center",
+            placeholder_text = 15
         )
         self.longbreakinput.grid(
             row = 3,
-            column = 2,
-            padx = (0, 15)
+            column = 1
         )
-        self.longbreakinput.set("")
 
-        self.worknumimg = ImageTk.PhotoImage(Image.open(
-          Path(__file__).parent / "../res/media/pencil.png"  
-        ))
-        self.worknumimglabel = ctk.CTkLabel(
-            self.time_settings_frame,
-            image = self.worknumimg
-        )
-        self.worknumimglabel.grid(
-            row = 4,
-            column = 0,
-        )
         self.worknumlabel = ctk.CTkLabel(
             self.time_settings_frame,
             text = "Number of work cycles",
@@ -301,25 +243,19 @@ class Settings(ctk.CTkToplevel):
         )
         self.worknumlabel.grid(
             row = 4,
-            column = 1,
-            pady = (10, 0)
+            column = 0
         )
-        self.worknum = ctk.CTkOptionMenu(
+        self.worknum = ctk.CTkEntry(
             self.time_settings_frame,
             width = 120,
-            text_font = ("Helvetica Medium", 11),
-            values = [i for i in range(2, 11)],
-            fg_color = "grey35",
-            button_color = "#FF775B",
-            button_hover_color = "#FF8B6F"
+            text_font = ("Roboto Medium", 11),
+            justify = "center",
+            placeholder_text = 4
         )
         self.worknum.grid(
             row = 4,
-            column = 2,
-            padx = (0, 15),
-            pady = (11, 0)
+            column = 1
         )
-        self.worknum.set(4)
 
         self.save = ctk.CTkButton(
             self,
@@ -359,10 +295,10 @@ class Settings(ctk.CTkToplevel):
         self.init_notifications_frame()
 
     def save_inputs(self):
-        self.worktime = self.workinput.get()
-        self.shortbreaktime = self.shortbreakinput.get()
-        self.longbreaktime = self.longbreakinput.get()
-        self.workcycles = self.worknum.get()
+        self.worktime = int(self.workinput.get())
+        self.shortbreaktime = int(self.shortbreakinput.get())
+        self.longbreaktime = int(self.longbreakinput.get())
+        self.workcycles = int(self.worknum.get())
         for entry in self.entries:
             self.websites.append(entry.get())
         self.parse(self.websites)
@@ -410,10 +346,10 @@ class Settings(ctk.CTkToplevel):
             "Are you sure you want to reset all settings to default?"
         ) == True:
             # Reset settings in times settings frame
-            self.workinput.set("")
-            self.shortbreakinput.set("")
-            self.longbreakinput.set("")
-            self.autostartinput.deselect()
+            self.workinput.delete(0, tk.END)
+            self.shortbreakinput.delete(0, tk.END)
+            self.longbreakinput.delete(0, tk.END)
+            self.workcycles.delete(0, tk.END)
 
             # Reset settings in website settings frame
             self.workblock.deselect()
