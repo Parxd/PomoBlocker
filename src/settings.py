@@ -295,50 +295,75 @@ class Settings(ctk.CTkToplevel):
         self.init_notifications_frame()
 
     def save_inputs(self):
-        self.worktime = int(self.workinput.get())
-        self.shortbreaktime = int(self.shortbreakinput.get())
-        self.longbreaktime = int(self.longbreakinput.get())
-        self.workcycles = int(self.worknum.get())
-        for entry in self.entries:
-            self.websites.append(entry.get())
-        self.parse(self.websites)
-        self.notification = self.radiovar.get()
+        # Timer-related settings
+        try:
+            self.worktime = int(self.workinput.get())
+            self.shortbreaktime = int(self.shortbreakinput.get())
+            self.longbreaktime = int(self.longbreakinput.get())
+            self.workcycles = int(self.worknum.get())
 
-        if not self.worktime and not self.shortbreaktime and not self.longbreaktime:
-            self.proceed1 = messagebox.askyesno(
-                "Warning",
-                "Are you sure you want to proceed with default Pomodoro times?"
-            )
-            self.worktime = 25
-            self.shortbreaktime = 5
-            self.longbreaktime = 15
-        elif not self.worktime or not self.shortbreaktime or not self.longbreaktime:
-            self.proceed1 = False
+            # Blocker-related settings
+            for entry in self.entries:
+                self.websites.append(entry.get())
+            self.parse(self.websites)
+            self.workblock = self.workblockinput.get()
+            self.shortbreakblock = self.shortbreakblockinput.get()
+            self.longbreakblock = self.longbreakblockinput.get()
+            self.blockcyles = [self.workblock, self.shortbreakblock, self.longbreakblock]
+
+            # Notification-related setting
+            self.notification = self.radiovar.get()
+
+            if self.shortbreaktime > self.worktime:
+                messagebox.showerror(
+                    "Error",
+                    "Short break time cannot be greater than the work time."
+                )
+            elif self.shortbreaktime > self.longbreaktime:
+                messagebox.showerror(
+                    "Error",
+                    "Short break time cannot be greater than the long break time."
+                )
+            else:
+                if not self.worktime and not self.shortbreaktime and not self.longbreaktime:
+                    self.proceed1 = messagebox.askyesno(
+                        "Warning",
+                        "Are you sure you want to proceed with default Pomodoro times?"
+                    )
+                    self.worktime = 25
+                    self.shortbreaktime = 5
+                    self.longbreaktime = 15
+                elif not self.worktime or not self.shortbreaktime or not self.longbreaktime:
+                    self.proceed1 = False
+                    messagebox.showerror(
+                        "Error",
+                        "Please fill in all fields."
+                    )
+                else:
+                    self.proceed1 = True
+                if self.proceed1:
+                    if all(flag == "" for flag in self.websites):
+                        self.proceed2 = messagebox.askyesno(
+                            "Warning",
+                            "Are you sure you want to proceed without blocking any websites?"
+                        )
+                        if self.proceed2:
+                            messagebox.showinfo(
+                                "Notice",
+                                "Information saved!"
+                            )
+                            self.destroy()
+                    else:
+                        messagebox.showinfo(
+                                "Notice",
+                                "Information saved!"
+                            )
+                        self.destroy()
+        except ValueError:
             messagebox.showerror(
                 "Error",
-                "Please fill in all fields."
+                "Please enter valid times."
             )
-        else:
-            self.proceed1 = True
-
-        if self.proceed1:
-            if all(flag == "" for flag in self.websites):
-                self.proceed2 = messagebox.askyesno(
-                    "Warning",
-                    "Are you sure you want to proceed without blocking any websites?"
-                )
-                if self.proceed2:
-                    messagebox.showinfo(
-                        "Notice",
-                        "Information saved!"
-                    )
-                    self.destroy()
-            else:
-                messagebox.showinfo(
-                        "Notice",
-                        "Information saved!"
-                    )
-                self.destroy()
 
     def reset_inputs(self):
         if messagebox.askyesno(
@@ -392,36 +417,37 @@ class Settings(ctk.CTkToplevel):
             columnspan = 3,
             pady = (0, 12)
         )
-        self.workblock = ctk.CTkCheckBox(
+        self.workblockinput = ctk.CTkCheckBox(
             self.websites_settings_frame,
             text = "Work",
             text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B",
             hover_color = "#FF9579"
         )
-        self.workblock.grid(
+        self.workblockinput.grid(
             row = 2,
             column = 0
         )
-        self.shortbreakblock = ctk.CTkCheckBox(
+        self.workblockinput.select()
+        self.shortbreakblockinput = ctk.CTkCheckBox(
             self.websites_settings_frame,
             text = "Short break",
             text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B",
             hover_color = "#FF9579"
         )
-        self.shortbreakblock.grid(
+        self.shortbreakblockinput.grid(
             row = 2,
             column = 1
         )
-        self.longbreakblock = ctk.CTkCheckBox(
+        self.longbreakblockinput = ctk.CTkCheckBox(
             self.websites_settings_frame,
             text = "Long break",
             text_font = ("Roboto Medium", 10),
             fg_color = "#FF775B",
             hover_color = "#FF9579"
         )
-        self.longbreakblock.grid(
+        self.longbreakblockinput.grid(
             row = 2,
             column = 2
         )
