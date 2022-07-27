@@ -25,8 +25,8 @@ class App():
     shortbreakstring = f"{shortbreak_const // 60:02d} : {shortbreak_const % 60:02d}"
     longbreakstring = f"{longbreak_const // 60:02d} : {longbreak_const % 60:02d}"
     workcount = 0
-    pomocount = 0
     workcycles = 4
+    notification = 1
 
     def __init__(self):
         self.root = ctk.CTk()
@@ -487,7 +487,6 @@ class App():
         if self.frame == self.workframe:
             if skip:
                 self.workcount += 1
-                self.pomocount += 1
                 self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -526,8 +525,6 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.shortbreaktimevar.set(self.shortbreakstring)
                 self.short_start_button.configure(state = tk.NORMAL)
-                if self.workcount:
-                    self.pomocount += 1
         else:
             if skip:
                 self.showworkframe.configure(state = tk.NORMAL)
@@ -540,8 +537,6 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.longbreaktimevar.set(self.longbreakstring)
                 self.long_start_button.configure(state = tk.NORMAL)
-                if self.workcount:
-                    self.pomocount += 1 # Only add to pomocount if there's already a work cycle done
                 if self.workcount == self.workcycles:
                     self.workcount = 0
                     self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -571,7 +566,6 @@ class App():
                 if not seconds and not minutes:
                     self.start_bool(False)
                     self.workcount += 1
-                    self.pomocount += 1
                     self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                     self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
                     self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -588,23 +582,7 @@ class App():
                         self.showworkframe.configure(state = tk.DISABLED)
                         self.showshortbreakframe.configure(state = tk.DISABLED)
                         try:
-                            # Notifications
-                            if self.notification == 1:
-                                notification = ToastNotifier()
-                                notification.show_toast(
-                                    "PomoBlocker",
-                                    "Time's up!",
-                                    icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                    duration = 5
-                                )
-                            elif self.notification == 2:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                            elif self.notification == 3:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                            elif self.notification == 4:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                            elif self.notification == 5:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                            self.notifications()
                         except AttributeError:
                             pass
                     else:
@@ -613,23 +591,7 @@ class App():
                         self.work_start_button.configure(state = tk.NORMAL)
 
                         try:
-                            # Notifications
-                            if self.notification == 1:
-                                notification = ToastNotifier()
-                                notification.show_toast(
-                                    "PomoBlocker",
-                                    "Time's up!",
-                                    icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                    duration = 5
-                                )
-                            elif self.notification == 2:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                            elif self.notification == 3:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                            elif self.notification == 4:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                            elif self.notification == 5:
-                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                            self.notifications()
                         except AttributeError:
                             pass
             except UnboundLocalError: # To prevent errors when using stop button
@@ -662,27 +624,9 @@ class App():
                     self.worktimevar.set(self.workstring)
                     self.shortbreaktimevar.set(self.shortbreakstring)
                     self.short_start_button.configure(state = tk.NORMAL)
-                    if self.workcount:
-                        self.pomocount += 1
 
                     try:
-                        # Notifications
-                        if self.notification == 1:
-                            notification = ToastNotifier()
-                            notification.show_toast(
-                                "PomoBlocker",
-                                "Time's up!",
-                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                duration = 5
-                            )
-                        elif self.notification == 2:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                        elif self.notification == 3:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                        elif self.notification == 4:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                        elif self.notification == 5:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        self.notifications()
                     except AttributeError:
                         pass
             except UnboundLocalError:
@@ -715,8 +659,6 @@ class App():
                     self.worktimevar.set(self.workstring)
                     self.longbreaktimevar.set(self.longbreakstring)
                     self.long_start_button.configure(state = tk.NORMAL)
-                    if self.workcount:
-                        self.pomocount += 1
                     if self.workcount == self.workcycles:
                         self.workcount = 0
                         self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -727,23 +669,7 @@ class App():
                         self.workcounterlb.configure(text_color = "#FFFFFF")
 
                     try:
-                        # Notifications
-                        if self.notification == 1:
-                            notification = ToastNotifier()
-                            notification.show_toast(
-                                "PomoBlocker",
-                                "Time's up!",
-                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                duration = 5
-                            )
-                        elif self.notification == 2:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                        elif self.notification == 3:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                        elif self.notification == 4:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                        elif self.notification == 5:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        self.notifications()
                     except AttributeError:
                         pass
             except UnboundLocalError:
@@ -810,6 +736,25 @@ class App():
                 self.notification = self.settings.notification
             except AttributeError:
                 pass
+    
+    def notifications(self):
+        # Notifications
+        if self.notification == 1:
+            notification = ToastNotifier()
+            notification.show_toast(
+                "PomoBlocker",
+                "Time's up!",
+                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
+                duration = 5
+            )
+        elif self.notification == 2:
+            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
+        elif self.notification == 3:
+            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
+        elif self.notification == 4:
+            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
+        elif self.notification == 5:
+            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))        
 
     def open_login(self):
         messagebox.showinfo(
