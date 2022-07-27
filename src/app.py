@@ -8,7 +8,7 @@ import customtkinter as ctk
 from playsound import playsound
 from win10toast import ToastNotifier
 from settings import Settings
-import blocker
+from blocker import block
 
 ctk.set_appearance_mode("dark")
 
@@ -498,10 +498,14 @@ class App():
                     self.longbreak = self.longbreak_const
                     self.longbreaktimevar.set(self.longbreakstring)
 
+                    self.workcounterw.configure(text_color = "#FF775B")
+                    self.workcountersb.configure(text_color = "#FF775B")
                     self.workcounterlb.configure(text_color = "#FF775B")
                     self.raise_frame(self.longbreakframe)
                     self.worktimevar.set(self.workstring)
                     self.work_start_button.configure(state = tk.NORMAL)
+                    self.showworkframe.configure(state = tk.DISABLED)
+                    self.showshortbreakframe.configure(state = tk.DISABLED)
                 else:
                     self.shortbreak = self.shortbreak_const
                     self.shortbreaktimevar.set(self.shortbreakstring)
@@ -526,8 +530,6 @@ class App():
                     self.pomocount += 1
         else:
             if skip:
-                self.workcount = 0
-                self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.showworkframe.configure(state = tk.NORMAL)
                 self.showshortbreakframe.configure(state = tk.NORMAL)
                 self.longbreak = self.longbreak_const
@@ -540,6 +542,14 @@ class App():
                 self.long_start_button.configure(state = tk.NORMAL)
                 if self.workcount:
                     self.pomocount += 1 # Only add to pomocount if there's already a work cycle done
+                if self.workcount == self.workcycles:
+                    self.workcount = 0
+                    self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
+                    self.workcounterw.configure(text_color = "#FFFFFF")
+                    self.workcountersb.configure(text_color = "#FFFFFF")
+                    self.workcounterlb.configure(text_color = "#FFFFFF")
 
     def timer(self):
         if self.frame == self.workframe:
@@ -569,50 +579,59 @@ class App():
                     self.showshortbreakframe.configure(state = tk.NORMAL)
                     self.showlongbreakframe.configure(state = tk.NORMAL)
                     if self.workcount == self.workcycles:
+                        self.workcounterw.configure(text_color = "#FF775B")
+                        self.workcountersb.configure(text_color = "#FF775B")
                         self.workcounterlb.configure(text_color = "#FF775B")
                         self.raise_frame(self.longbreakframe)
                         self.worktimevar.set(self.workstring)
                         self.work_start_button.configure(state = tk.NORMAL)
-
-                        # Notifications
-                        if self.notification == 1:
-                            notification = ToastNotifier()
-                            notification.show_toast(
-                                "PomoBlocker",
-                                "Time's up!",
-                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                duration = 5
-                            )
-                        elif self.notification == 2:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                        elif self.notification == 3:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                        elif self.notification == 4:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                        elif self.notification == 5:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        self.showworkframe.configure(state = tk.DISABLED)
+                        self.showshortbreakframe.configure(state = tk.DISABLED)
+                        try:
+                            # Notifications
+                            if self.notification == 1:
+                                notification = ToastNotifier()
+                                notification.show_toast(
+                                    "PomoBlocker",
+                                    "Time's up!",
+                                    icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
+                                    duration = 5
+                                )
+                            elif self.notification == 2:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
+                            elif self.notification == 3:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
+                            elif self.notification == 4:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
+                            elif self.notification == 5:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        except AttributeError:
+                            pass
                     else:
                         self.raise_frame(self.shortbreakframe)
                         self.worktimevar.set(self.workstring)
                         self.work_start_button.configure(state = tk.NORMAL)
 
-                        # Notifications
-                        if self.notification == 1:
-                            notification = ToastNotifier()
-                            notification.show_toast(
-                                "PomoBlocker",
-                                "Time's up!",
-                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                                duration = 5
-                            )
-                        elif self.notification == 2:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                        elif self.notification == 3:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                        elif self.notification == 4:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                        elif self.notification == 5:
-                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        try:
+                            # Notifications
+                            if self.notification == 1:
+                                notification = ToastNotifier()
+                                notification.show_toast(
+                                    "PomoBlocker",
+                                    "Time's up!",
+                                    icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
+                                    duration = 5
+                                )
+                            elif self.notification == 2:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
+                            elif self.notification == 3:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
+                            elif self.notification == 4:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
+                            elif self.notification == 5:
+                                playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                        except AttributeError:
+                            pass
             except UnboundLocalError: # To prevent errors when using stop button
                 pass
 
@@ -646,23 +665,26 @@ class App():
                     if self.workcount:
                         self.pomocount += 1
 
-                    # Notifications
-                    if self.notification == 1:
-                        notification = ToastNotifier()
-                        notification.show_toast(
-                            "PomoBlocker",
-                            "Time's up!",
-                            icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                            duration = 5
-                        )
-                    elif self.notification == 2:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                    elif self.notification == 3:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                    elif self.notification == 4:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                    elif self.notification == 5:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                    try:
+                        # Notifications
+                        if self.notification == 1:
+                            notification = ToastNotifier()
+                            notification.show_toast(
+                                "PomoBlocker",
+                                "Time's up!",
+                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
+                                duration = 5
+                            )
+                        elif self.notification == 2:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
+                        elif self.notification == 3:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
+                        elif self.notification == 4:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
+                        elif self.notification == 5:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                    except AttributeError:
+                        pass
             except UnboundLocalError:
                 pass
 
@@ -684,8 +706,6 @@ class App():
             try:
                 if not seconds and not minutes:
                     self.start_bool(False)
-                    self.workcount = 0
-                    self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
                     self.showworkframe.configure(state = tk.NORMAL)
                     self.showshortbreakframe.configure(state = tk.NORMAL)
                     self.longbreak = self.longbreak_const
@@ -697,24 +717,35 @@ class App():
                     self.long_start_button.configure(state = tk.NORMAL)
                     if self.workcount:
                         self.pomocount += 1
+                    if self.workcount == self.workcycles:
+                        self.workcount = 0
+                        self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+                        self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+                        self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
+                        self.workcounterw.configure(text_color = "#FFFFFF")
+                        self.workcountersb.configure(text_color = "#FFFFFF")
+                        self.workcounterlb.configure(text_color = "#FFFFFF")
 
-                    # Notifications
-                    if self.notification == 1:
-                        notification = ToastNotifier()
-                        notification.show_toast(
-                            "PomoBlocker",
-                            "Time's up!",
-                            icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
-                            duration = 5
-                        )
-                    elif self.notification == 2:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
-                    elif self.notification == 3:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
-                    elif self.notification == 4:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
-                    elif self.notification == 5:
-                        playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                    try:
+                        # Notifications
+                        if self.notification == 1:
+                            notification = ToastNotifier()
+                            notification.show_toast(
+                                "PomoBlocker",
+                                "Time's up!",
+                                icon_path = Path(__file__).parent / "..\\res\\media\\pomodoro.ico",
+                                duration = 5
+                            )
+                        elif self.notification == 2:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell1.wav"))
+                        elif self.notification == 3:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/bell2.wav"))
+                        elif self.notification == 4:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm1.wav"))
+                        elif self.notification == 5:
+                            playsound(str(Path(__file__).parent / "../res/media/sounds/alarm2.wav"))
+                    except AttributeError:
+                        pass
             except UnboundLocalError:
                 pass
     

@@ -384,7 +384,7 @@ class Settings(ctk.CTkToplevel):
                 entry.destroy()
 
             # Reset settings in notifications settings frame
-            self.nonotification.select()
+            self.windownotification.select()
         else:
             pass
 
@@ -577,6 +577,7 @@ class Settings(ctk.CTkToplevel):
             column = 0,
             pady = 10
         )
+        self.windownotification.select()
         self.bell1sound = ctk.CTkRadioButton(
             self.notifications_settings_frame,
             variable = self.radiovar,
