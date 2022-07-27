@@ -752,32 +752,33 @@ class App():
         self.settings.focus_set()
         self.settings.grab_set()
         self.settings.wait_window()
-        try:
-            self.work_const = self.settings.worktime * 60
-            self.work = self.work_const
-            self.shortbreak_const = self.settings.shortbreaktime * 60
-            self.shortbreak = self.shortbreak_const
-            self.longbreak_const = self.settings.longbreaktime * 60
-            self.longbreak = self.longbreak_const
+        if self.settings.worktime: # To make sure that opening settings without changing anything does not reset the timer
+            try:
+                self.work_const = self.settings.worktime * 60
+                self.work = self.work_const
+                self.shortbreak_const = self.settings.shortbreaktime * 60
+                self.shortbreak = self.shortbreak_const
+                self.longbreak_const = self.settings.longbreaktime * 60
+                self.longbreak = self.longbreak_const
 
-            self.workstring = f"{self.work_const // 60:02d} : {self.work_const % 60:02d}"
-            self.shortbreakstring = f"{self.shortbreak_const // 60:02d} : {self.shortbreak_const % 60:02d}"
-            self.longbreakstring = f"{self.longbreak_const // 60:02d} : {self.longbreak_const % 60:02d}"
+                self.workstring = f"{self.work_const // 60:02d} : {self.work_const % 60:02d}"
+                self.shortbreakstring = f"{self.shortbreak_const // 60:02d} : {self.shortbreak_const % 60:02d}"
+                self.longbreakstring = f"{self.longbreak_const // 60:02d} : {self.longbreak_const % 60:02d}"
 
-            self.worktimevar.set(tk.StringVar(value = self.workstring).get())
-            self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
-            self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
+                self.worktimevar.set(tk.StringVar(value = self.workstring).get())
+                self.shortbreaktimevar.set(tk.StringVar(value = self.shortbreakstring).get())
+                self.longbreaktimevar.set(tk.StringVar(value = self.longbreakstring).get())
 
-            self.workcycles = self.settings.workcycles
-            self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
-            self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
-            self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
+                self.workcycles = self.settings.workcycles
+                self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
+                self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
+                self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
 
-            self.blockcycles = self.settings.blockcyles
+                self.blockcycles = self.settings.blockcyles
 
-            self.notification = self.settings.notification
-        except AttributeError:
-            pass
+                self.notification = self.settings.notification
+            except AttributeError:
+                pass
 
     def open_login(self):
         messagebox.showinfo(

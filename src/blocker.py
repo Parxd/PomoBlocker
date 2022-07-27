@@ -1,5 +1,4 @@
 from datetime import datetime
-import tkinter as tk
 
 end_time = datetime(2022, 6, 1, 0, 0)
 sites = ['www.reddit.com', 'reddit.com', 'www.facebook.com', 'facebook.com']
@@ -34,7 +33,3 @@ def block():
             # Truncate is used to return the file to its original format
             # if no parameter is given. 
             hosts.truncate()
-
-
-if __name__ == '__main__':
-    block()

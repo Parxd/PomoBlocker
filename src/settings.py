@@ -24,9 +24,9 @@ class Settings(ctk.CTkToplevel):
         self.entries = []
         self.websites = []
 
-        self.worktime = 25
-        self.shortbreaktime = 5
-        self.longbreaktime = 15
+        self.worktime = 0
+        self.shortbreaktime = 0
+        self.longbreaktime = 0
 
         ''' ----- Initialize tab frame & main three buttons ----- '''
         self.tabframe = ctk.CTkFrame(
