@@ -429,6 +429,7 @@ class Settings(ctk.CTkToplevel):
             column = 0
         )
         self.workblockinput.select()
+        self.workblockinput.configure(state = tk.DISABLED)
         self.shortbreakblockinput = ctk.CTkCheckBox(
             self.websites_settings_frame,
             text = "Short break",

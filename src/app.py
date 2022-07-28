@@ -8,7 +8,7 @@ import customtkinter as ctk
 from playsound import playsound
 from win10toast import ToastNotifier
 from settings import Settings
-from blocker import block
+from blocker import block, unblock
 
 ctk.set_appearance_mode("dark")
 
@@ -27,6 +27,8 @@ class App():
     workcount = 0
     workcycles = 4
     notification = 1
+    websites = []
+    blockcycles = [1, 0, 0]
 
     def __init__(self):
         self.root = ctk.CTk()
@@ -466,6 +468,11 @@ class App():
             column = 3
         )
 
+        messagebox.showinfo(
+            "PomoBlocker",
+            "For best results, please restart your browser and clear the cache."
+        )
+
     def start_bool(self, state):
         self.start = state
 
@@ -493,6 +500,8 @@ class App():
                 self.work = self.work_const
                 self.showshortbreakframe.configure(state = tk.NORMAL)
                 self.showlongbreakframe.configure(state = tk.NORMAL)
+                if self.blockcycles[0] and not self.blockcycles[1]:
+                    unblock(self.websites)
                 if self.workcount == self.workcycles:
                     self.longbreak = self.longbreak_const
                     self.longbreaktimevar.set(self.longbreakstring)
@@ -525,6 +534,8 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.shortbreaktimevar.set(self.shortbreakstring)
                 self.short_start_button.configure(state = tk.NORMAL)
+                if not self.blockcycles[0]:
+                    unblock(self.websites)
         else:
             if skip:
                 self.showworkframe.configure(state = tk.NORMAL)
@@ -537,6 +548,8 @@ class App():
                 self.worktimevar.set(self.workstring)
                 self.longbreaktimevar.set(self.longbreakstring)
                 self.long_start_button.configure(state = tk.NORMAL)
+                if self.blockcycles[2]:
+                    unblock(self.websites)
                 if self.workcount == self.workcycles:
                     self.workcount = 0
                     self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -548,6 +561,8 @@ class App():
 
     def timer(self):
         if self.frame == self.workframe:
+            if self.blockcycles[0]:
+                block(self.websites)
             if self.start:
                 self.work_start_button.configure(state = tk.DISABLED)
                 self.showshortbreakframe.configure(state = tk.DISABLED)
@@ -572,6 +587,8 @@ class App():
                     self.work = self.work_const
                     self.showshortbreakframe.configure(state = tk.NORMAL)
                     self.showlongbreakframe.configure(state = tk.NORMAL)
+                    if self.blockcycles[0] and not self.blockcycles[1]:
+                        unblock(self.websites)
                     if self.workcount == self.workcycles:
                         self.workcounterw.configure(text_color = "#FF775B")
                         self.workcountersb.configure(text_color = "#FF775B")
@@ -598,6 +615,8 @@ class App():
                 pass
 
         elif self.frame == self.shortbreakframe:
+            if self.blockcycles[1]:
+                block(self.websites)
             if self.start:
                 self.short_start_button.configure(state = tk.DISABLED)
                 self.showworkframe.configure(state = tk.DISABLED)
@@ -624,7 +643,8 @@ class App():
                     self.worktimevar.set(self.workstring)
                     self.shortbreaktimevar.set(self.shortbreakstring)
                     self.short_start_button.configure(state = tk.NORMAL)
-
+                    if self.blockcycles[1]:
+                        unblock(self.websites)
                     try:
                         self.notifications()
                     except AttributeError:
@@ -633,6 +653,10 @@ class App():
                 pass
 
         else:
+            if self.blockcycles[2]:
+                block(self.websites)
+            else:
+                unblock(self.websites)
             if self.start:
                 self.long_start_button.configure(state = tk.DISABLED)
                 self.showworkframe.configure(state = tk.DISABLED)
@@ -659,6 +683,8 @@ class App():
                     self.worktimevar.set(self.workstring)
                     self.longbreaktimevar.set(self.longbreakstring)
                     self.long_start_button.configure(state = tk.NORMAL)
+                    if self.blockcycles[2]:
+                        unblock(self.websites)
                     if self.workcount == self.workcycles:
                         self.workcount = 0
                         self.workcounterw.configure(text = f"{self.workcount} / {self.workcycles}")
@@ -667,7 +693,6 @@ class App():
                         self.workcounterw.configure(text_color = "#FFFFFF")
                         self.workcountersb.configure(text_color = "#FFFFFF")
                         self.workcounterlb.configure(text_color = "#FFFFFF")
-
                     try:
                         self.notifications()
                     except AttributeError:
@@ -731,6 +756,7 @@ class App():
                 self.workcountersb.configure(text = f"{self.workcount} / {self.workcycles}")
                 self.workcounterlb.configure(text = f"{self.workcount} / {self.workcycles}")
 
+                self.websites = self.settings.sites
                 self.blockcycles = self.settings.blockcyles
 
                 self.notification = self.settings.notification
@@ -767,10 +793,16 @@ class App():
             "PomoBlocker",
             "Pomodoro summary feature coming soon!"
         )
+    
+    def onclose(self):
+        if messagebox.askyesno("PomoBlocker", "Are you sure you want to quit?"):
+            unblock(self.websites)
+            self.root.destroy()
 
 
 def main():
     app = App()
+    app.root.protocol("WM_DELETE_WINDOW", app.onclose)
     app.root.mainloop()
 
 
