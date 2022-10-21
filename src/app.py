@@ -470,7 +470,7 @@ class App():
 
         messagebox.showinfo(
             "PomoBlocker",
-            "For best results, please restart your browser and clear the cache."
+            "For best results, please restart your browser between cycles and clear the cache."
         )
 
     def start_bool(self, state):
